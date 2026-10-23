@@ -283,19 +283,27 @@ test("AC-12：settings 解析失败 / 目录只读 / 文件缺失 ⇒ exit 0 且
   assert.equal(read(bad.settings), "[1,2,3]\n", "解析失败必须原样保留");
   assert.deepEqual(bad.files.map(read), badFactory, "文件还原照常完成");
 
-  // ② 设置目录只读 ⇒ 写不进去，原文件保持不变，仍然 exit 0、文件照常还原
+  // ② 设置目录/文件只读 ⇒ 写不进去，原文件保持不变，仍然 exit 0、文件照常还原
   const ro = makeSandbox();
   const roSettingsBefore = read(ro.settings);
   const roFactory = ro.files.map(read);
   patch(ro.appRoot, true);
-  fs.chmodSync(ro.settingsDir, 0o555);
+  if (process.platform === "win32") {
+    fs.chmodSync(ro.settings, 0o444);
+  } else {
+    fs.chmodSync(ro.settingsDir, 0o555);
+  }
   try {
     res = runUninstall(ro);
     assert.equal(res.status, 0, res.stderr);
     assert.equal(read(ro.settings), roSettingsBefore, "写不进去时不得留下半成品");
     assert.deepEqual(ro.files.map(read), roFactory, "settings 失败不该影响文件还原");
   } finally {
-    fs.chmodSync(ro.settingsDir, 0o755);
+    if (process.platform === "win32") {
+      fs.chmodSync(ro.settings, 0o666);
+    } else {
+      fs.chmodSync(ro.settingsDir, 0o755);
+    }
   }
 
   // ③ settings 不存在 ⇒ 跳过端点清理、文件照常还原

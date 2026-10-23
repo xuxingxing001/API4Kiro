@@ -199,20 +199,21 @@ const CARD_CSS = `${START}
   max-width: min(90vw, 640px) !important;
 }
 
-/* 渠道卡片头：精简间距 */
+/* 渠道卡片头：精简间距，与右侧模型列表 1:1 对齐 */
 .chat-input-popup-option.a2k-exclusive-model-option.a2k-opt-grp {
-  margin: 6px 5px 0 5px !important;
-  padding: 4px 8px !important;
+  margin: 8px 6px 0 6px !important;
+  padding: 7px 10px !important;
   border-radius: 8px 8px 0 0 !important;
   background: rgba(255, 255, 255, 0.035) !important;
   border: 1px solid rgba(255, 255, 255, 0.11) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
   cursor: default !important;
   pointer-events: auto !important;
   user-select: none !important;
+  box-sizing: border-box !important;
 }
 .chat-input-popup-option.a2k-exclusive-model-option.a2k-opt-grp:first-child {
-  margin-top: 2px !important;
+  margin-top: 4px !important;
 }
 .chat-input-popup-option.a2k-exclusive-model-option.a2k-opt-grp:hover {
   background: rgba(255, 255, 255, 0.05) !important;
@@ -221,28 +222,27 @@ const CARD_CSS = `${START}
 .a2k-card-head {
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 8px !important;
   width: 100% !important;
 }
 .a2k-chev {
-  font-size: 8px !important;
-  color: rgba(255, 255, 255, 0.5) !important;
-  transform: scale(0.8) !important;
+  font-size: 9px !important;
+  color: rgba(255, 255, 255, 0.45) !important;
   flex: none !important;
 }
 .a2k-logo {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 17px !important;
-  height: 17px !important;
+  width: 18px !important;
+  height: 18px !important;
   border-radius: 50% !important;
   background: rgba(166, 108, 255, 0.18) !important;
   border: 1.2px solid rgba(166, 108, 255, 0.65) !important;
   color: #ffffff !important;
-  font-size: 9.5px !important;
+  font-size: 10px !important;
   font-weight: 700 !important;
-  box-shadow: 0 0 6px rgba(166, 108, 255, 0.4) !important;
+  box-shadow: 0 0 6px rgba(166, 108, 255, 0.35) !important;
   flex: none !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
@@ -253,24 +253,20 @@ const CARD_CSS = `${START}
   height: 11px !important;
 }
 .a2k-title {
-  font-size: 11.5px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
-  color: rgb(214, 196, 255) !important;
-  text-shadow: 0 0 5px rgba(166, 108, 255, 0.35) !important;
+  color: #e6edf3 !important;
   letter-spacing: 0.1px !important;
 }
 .a2k-count {
-  font-size: 10px !important;
-  color: rgba(255, 255, 255, 0.4) !important;
-  margin-left: 2px !important;
-  font-weight: 500 !important;
+  display: none !important;
 }
 
-/* 卡片内部模型行：微缩紧凑，上下居中 */
+/* 卡片内部模型行：左右封闭边框 + 行间分隔线，构筑完整轮廓（v1 类名） */
 .chat-input-popup-option.a2k-exclusive-model-option.a2k-opt-mdl {
-  margin: 0 5px !important;
-  padding: 3px 8px !important;
-  min-height: 25px !important;
+  margin: 0 6px !important;
+  padding: 6px 10px !important;
+  min-height: 28px !important;
   box-sizing: border-box !important;
   background: rgba(255, 255, 255, 0.015) !important;
   border-left: 1px solid rgba(255, 255, 255, 0.11) !important;
@@ -284,20 +280,20 @@ const CARD_CSS = `${START}
   background: rgba(255, 255, 255, 0.04) !important;
 }
 
-/* 卡片最后一行 */
+/* 卡片最后一行闭合底部圆角 */
 .chat-input-popup-option.a2k-exclusive-model-option.a2k-opt-last {
   border-radius: 0 0 8px 8px !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.11) !important;
-  margin-bottom: 6px !important;
+  margin-bottom: 8px !important;
 }
 
-/* 模型行内部排版 */
+/* 模型行内部排版：名称居左，徽章胶囊居右对齐 */
 .a2k-model-row {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   width: 100% !important;
-  gap: 5px !important;
+  gap: 8px !important;
 }
 .a2k-model-name-box {
   display: inline-flex !important;
@@ -306,21 +302,17 @@ const CARD_CSS = `${START}
   flex: 1 1 auto !important;
 }
 .a2k-model-row .chat-input-popup-option-name {
-  font-size: 11.5px !important;
+  font-size: 12px !important;
   font-weight: 500 !important;
-  color: rgba(255, 255, 255, 0.92) !important;
+  color: #e6edf3 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  max-width: 180px !important;
+  max-width: none !important;
 }
 
-/* 选中的模型格子：严格对齐截图3标准 —— 浅紫色半透明底 + 柔和光晕呼吸 + 晶莹内描边，名字亮起加粗 */
+/* 选中的模型格子：浅紫高亮底 + 紫边晶莹内描边 */
 .chat-input-popup-option.a2k-exclusive-model-option[data-selected="true"].a2k-opt-mdl {
-  margin: 2px 5px !important;
-  padding: 3px 8px !important;
-  border-radius: 6px !important;
-  border: 1px solid rgba(166, 108, 255, 0.45) !important;
   background: rgba(166, 108, 255, 0.18) !important;
   box-shadow: inset 0 0 0 1px rgba(210, 190, 255, 0.45), 0 0 8px rgba(166, 108, 255, 0.32) !important;
 }
@@ -330,38 +322,57 @@ const CARD_CSS = `${START}
   text-shadow: 0 0 8px rgba(166, 108, 255, 0.6) !important;
 }
 
-/* 能力胶囊标签：微缩纯简笔画SVG */
+/* 能力胶囊标签：纯矢量图标精致徽标（无文字，保留 title 提示） */
 .a2k-caps-box {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 3px !important;
+  gap: 5px !important;
   flex: none !important;
 }
 .a2k-cap {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 18px !important;
-  height: 16px !important;
-  border-radius: 3.5px !important;
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  border-radius: 5px !important;
+  cursor: default !important;
   user-select: none !important;
+  white-space: nowrap !important;
   flex: none !important;
   box-sizing: border-box !important;
 }
+.a2k-cap .a2k-cap-ico {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 13px !important;
+  height: 13px !important;
+  flex: none !important;
+}
+.a2k-cap .a2k-cap-ico svg {
+  width: 13px !important;
+  height: 13px !important;
+  display: block !important;
+}
+.a2k-cap-txt {
+  display: none !important;
+}
 .a2k-cap-reason {
-  background: rgba(255, 166, 87, 0.08) !important;
-  border: 1px solid rgba(255, 166, 87, 0.3) !important;
+  background: rgba(255, 166, 87, 0.14) !important;
   color: #ffb26b !important;
+  border: 1px solid rgba(255, 166, 87, 0.45) !important;
 }
 .a2k-cap-vision {
-  background: rgba(57, 197, 207, 0.08) !important;
-  border: 1px solid rgba(57, 197, 207, 0.3) !important;
+  background: rgba(57, 197, 207, 0.14) !important;
   color: #5fd4dc !important;
+  border: 1px solid rgba(57, 197, 207, 0.45) !important;
 }
 .a2k-cap svg {
   display: block !important;
-  width: 11px !important;
-  height: 11px !important;
+  width: 13px !important;
+  height: 13px !important;
 }
 
 /* ==========================================================================
@@ -574,12 +585,120 @@ const CARD_CSS = `${START}
    卡片头内部（.a2k-card-head / .a2k-logo / .a2k-title / .a2k-count / .a2k-chev）与徽章（.a2k-cap*）沿用上面的规则。
    面板自己管宽度与选中滚动，不打 1.1 代的菜单宽度 / resize / 居中补丁。
    ========================================================================== */
-.kiro-model-panel-option[data-a2k-grp="1"]{cursor:default !important;margin:6px 4px 0 !important;padding:4px 8px !important;border-radius:8px 8px 0 0 !important;background:rgba(255,255,255,.035) !important;border:1px solid rgba(255,255,255,.11) !important;}
-.kiro-model-panel-option[data-a2k-grp="1"]:first-child{margin-top:2px !important;}
-.kiro-model-panel-option[data-a2k-grp="1"] .kiro-model-panel-option-check,
+/* 隐藏原生 check 占位，消除选中与未选中行的缩进差异，让模型名称垂直水平完全对齐 */
+.kiro-model-panel-option .kiro-model-panel-option-check{display:none !important;}
+
+/* 渠道卡片头（v2 ModelPanel 形态） */
+.kiro-model-panel-option[data-a2k-grp="1"]{cursor:default !important;margin:8px 6px 0 !important;padding:7px 10px !important;border-radius:8px 8px 0 0 !important;background:rgba(255,255,255,.035) !important;border:1px solid rgba(255,255,255,.11) !important;border-bottom:1px solid rgba(255,255,255,.06) !important;box-sizing:border-box !important;}
+.kiro-model-panel-option[data-a2k-grp="1"]:first-child{margin-top:4px !important;}
 .kiro-model-panel-option[data-a2k-grp="1"] .kiro-model-panel-option-header{display:none !important;}
 .kiro-model-panel-option[data-a2k-grp="1"] .kiro-model-panel-option-description{display:block !important;color:inherit !important;opacity:1 !important;}
-.kiro-model-panel-option-description > .a2k-caps-box{margin-top:2px !important;}
+
+/* 模型卡片内部行：形成封闭的左右边框与行间分隔线，构筑完整轮廓 */
+.kiro-model-panel-option:not([data-a2k-grp="1"]){margin:0 6px !important;padding:6px 10px !important;min-height:28px !important;box-sizing:border-box !important;background:rgba(255,255,255,.015) !important;border-left:1px solid rgba(255,255,255,.11) !important;border-right:1px solid rgba(255,255,255,.11) !important;border-top:none !important;border-bottom:1px solid rgba(255,255,255,.05) !important;border-radius:0 !important;transition:background .12s ease !important;}
+.kiro-model-panel-option:not([data-a2k-grp="1"]):hover{background:rgba(255,255,255,.04) !important;}
+
+/* 卡片最后一项闭合下半圆角与底边 */
+.kiro-model-panel-option[data-a2k-last="1"],
+.kiro-model-panel-option:not([data-a2k-grp="1"]):has(+ .kiro-model-panel-option[data-a2k-grp="1"]),
+.kiro-model-panel-option:not([data-a2k-grp="1"]):last-child{border-radius:0 0 8px 8px !important;border-bottom:1px solid rgba(255,255,255,.11) !important;margin-bottom:8px !important;}
+
+/* 激活选中的模型格子高亮（与右侧侧栏 1:1 一致） */
+.kiro-model-panel-option[data-selected="true"]:not([data-a2k-grp="1"]){background:rgba(166,108,255,.18) !important;box-shadow:inset 0 0 0 1px rgba(210,190,255,.45), 0 0 8px rgba(166,108,255,.25) !important;}
+.kiro-model-panel-option[data-selected="true"]:not([data-a2k-grp="1"]) .chat-input-popup-option-name{color:#ffffff !important;font-weight:600 !important;text-shadow:0 0 8px rgba(166,108,255,.5) !important;}
+
+.kiro-model-panel-option-description > .a2k-caps-box{margin-top:0 !important;display:inline-flex !important;}
+
+/* ==========================================================================
+   Codex 风格 Effort 档位选择器与紧凑胶囊顶栏（4.13.70，荧光紫品牌主题）
+   借鉴 Codex 经典胶囊分段轨道 + 纯白立体圆球滑块 + 亮暗分段刻度点，融合我方荧光紫渐变
+   ========================================================================== */
+.a2k-codex-header{position:relative !important;display:flex !important;align-items:center !important;justify-content:center !important;padding:7px 18px 3px 18px !important;width:100% !important;box-sizing:border-box !important;user-select:none !important;}
+.a2k-codex-capsule{display:inline-flex !important;flex-direction:row !important;align-items:center !important;justify-content:center !important;gap:10px !important;background:linear-gradient(180deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.035) 100%) !important;border:1px solid rgba(255,255,255,.15) !important;border-radius:999px !important;padding:0 16px !important;cursor:pointer !important;outline:none !important;transition:all .2s cubic-bezier(.4,0,.2,1) !important;max-width:340px !important;height:34px !important;box-sizing:border-box !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.20),inset 0 -1px 0 rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28) !important;backdrop-filter:blur(8px) !important;-webkit-backdrop-filter:blur(8px) !important;}
+.a2k-codex-capsule:hover{background:linear-gradient(180deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.06) 100%) !important;border-color:rgba(168,85,247,.55) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 14px rgba(168,85,247,.32),0 3px 10px rgba(0,0,0,.35) !important;}
+.a2k-codex-capsule:active{transform:scale(.975) !important;}
+.a2k-codex-capsule-effort{display:inline-flex !important;align-items:center !important;gap:3px !important;background:rgba(168,85,247,.18) !important;border:1px solid rgba(192,132,252,.32) !important;border-radius:999px !important;padding:1.5px 8px 1.5px 9px !important;font-size:11px !important;font-weight:650 !important;color:#e9d5ff !important;letter-spacing:.35px !important;line-height:1.35 !important;white-space:nowrap !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 1px 3px rgba(0,0,0,.20) !important;}
+.a2k-codex-capsule-model{font-size:13.5px !important;font-weight:600 !important;color:#ffffff !important;line-height:1.35 !important;letter-spacing:.2px !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;max-width:230px !important;display:inline-block !important;text-shadow:0 1px 2px rgba(0,0,0,.40) !important;}
+.a2k-codex-capsule-arrow{font-size:11.5px !important;color:#d8b4fe !important;opacity:.9 !important;margin-left:1px !important;}
+.a2k-codex-reset{position:absolute !important;right:14px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;width:26px !important;height:26px !important;border:none !important;background:transparent !important;color:rgba(255,255,255,.45) !important;cursor:pointer !important;outline:none !important;border-radius:50% !important;transition:all .15s ease !important;}
+.a2k-codex-reset:hover{color:#d8b4fe !important;background:rgba(168,85,247,.12) !important;}
+.a2k-codex-reset.a2k-dimmed{opacity:.35 !important;cursor:default !important;}
+
+/* 折叠态（默认打开）：仅显示顶栏胶囊与 Effort 滑条，隐藏搜索框与全部模型列表 */
+.chat-input-popup-menu:has(.a2k-collapsed){max-width:calc(100vw - 20px) !important;box-sizing:border-box !important;overflow:visible !important;}
+.kiro-model-panel-body.a2k-collapsed{height:auto !important;min-height:0 !important;max-width:100% !important;padding:2px 0 2px 0 !important;box-sizing:border-box !important;overflow:visible !important;}
+.kiro-model-panel-body.a2k-collapsed .kiro-model-panel-header,
+.kiro-model-panel-body.a2k-collapsed .kiro-model-selector-list,
+.kiro-model-panel-body.a2k-collapsed .kiro-model-selector-empty{display:none !important;}
+.kiro-model-panel-body.a2k-collapsed .kiro-model-panel-settings{border-top:none !important;padding-top:0 !important;}
+
+/* 展开态：模型在左侧，模型搜索框在右侧，同行并排；隐藏底部的 Effort 选择器；列表容器约束高度与支持平滑滚动 */
+.kiro-model-panel-body.a2k-expanded{display:grid !important;grid-template-columns:auto 1fr !important;grid-template-rows:auto minmax(0,1fr) !important;align-items:stretch !important;border-bottom:none !important;height:100% !important;min-height:0 !important;overflow:hidden !important;}
+.kiro-model-panel-body.a2k-expanded .a2k-codex-header{grid-column:1 !important;grid-row:1 !important;display:flex !important;align-items:center !important;justify-content:flex-start !important;padding:6px 6px 6px 10px !important;width:auto !important;border-bottom:1px solid rgba(255,255,255,0.08) !important;}
+.kiro-model-panel-body.a2k-expanded .a2k-codex-capsule{max-width:250px !important;}
+.kiro-model-panel-body.a2k-expanded .a2k-codex-reset{display:none !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-panel-header{grid-column:2 !important;grid-row:1 !important;display:flex !important;align-items:center !important;padding:6px 10px 6px 4px !important;border-bottom:1px solid rgba(255,255,255,0.08) !important;min-width:0 !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-search{width:100% !important;min-width:0 !important;height:34px !important;background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,rgba(255,255,255,.03) 100%) !important;border:1px solid rgba(255,255,255,0.14) !important;border-radius:8px !important;padding:6px 12px !important;color:#ffffff !important;font-size:13px !important;outline:none !important;box-sizing:border-box !important;box-shadow:inset 0 1px 2px rgba(0,0,0,0.25) !important;transition:all .2s ease !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-search:focus{border-color:#a855f7 !important;box-shadow:0 0 8px rgba(168,85,247,0.35),inset 0 1px 2px rgba(0,0,0,0.2) !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-list,
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-empty{grid-column:1 / -1 !important;grid-row:2 !important;min-height:0 !important;height:100% !important;overflow-y:auto !important;align-self:stretch !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-list::-webkit-scrollbar{width:8px !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-list::-webkit-scrollbar-track{background:transparent !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22) !important;border-radius:999px !important;border:2px solid transparent !important;background-clip:padding-box !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-selector-list::-webkit-scrollbar-thumb:hover{background:rgba(168,85,247,.6) !important;border:2px solid transparent !important;background-clip:padding-box !important;}
+.kiro-model-panel-body.a2k-expanded .kiro-model-panel-settings,
+.kiro-model-panel-body.a2k-expanded .kiro-model-panel-section{display:none !important;}
+
+/* 隐藏冗余的原生 Effort 文本与默认按钮，由 Codex 胶囊顶栏统一呈现 */
+.kiro-model-panel-body .kiro-model-panel-section-label,
+.kiro-model-panel-body .kiro-model-panel-effort-status{display:none !important;}
+.kiro-model-panel-body .kiro-model-panel-section-header{gap:0 !important;width:100% !important;}
+.kiro-model-panel-body .kiro-model-panel-section{padding:2px 18px 6px 18px !important;border-top:none !important;background:transparent !important;box-sizing:border-box !important;overflow:visible !important;width:100% !important;}
+
+/* 隐藏顶部搜索栏原生的 "Model" 文本标签，让搜索框自由伸展 */
+.kiro-model-panel-title{display:none !important;}
+
+/* 隐藏模型列表中每行条目右侧冗余的 Effort 图标 */
+.kiro-model-panel-option-glyphs{display:none !important;}
+
+/* 模型能力徽章与名称同行显示，非压缩不折行 */
+.kiro-model-panel-option .chat-input-popup-option-content{display:flex !important;flex-direction:row !important;align-items:center !important;justify-content:space-between !important;width:100% !important;gap:8px !important;min-width:0 !important;}
+.kiro-model-panel-option .kiro-model-panel-option-header{display:inline-flex !important;align-items:center !important;flex:1 1 auto !important;min-width:0 !important;}
+.kiro-model-panel-option .chat-input-popup-option-name{font-size:12px !important;font-weight:500 !important;color:#e6edf3 !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;max-width:none !important;}
+.kiro-model-panel-option .kiro-model-panel-option-description{display:inline-flex !important;align-items:center !important;flex:0 0 auto !important;margin:0 0 0 auto !important;padding:0 !important;}
+
+.kiro-model-panel-slider{-webkit-appearance:none !important;appearance:none !important;flex:1 1 auto !important;min-width:0 !important;width:100% !important;height:26px !important;background:transparent !important;outline:none !important;margin:0 !important;padding:0 !important;cursor:pointer !important;--dot0:#ffffff;--dot1:rgba(255,255,255,.32);--dot2:rgba(255,255,255,.32);--dot3:rgba(255,255,255,.32);--dot4:rgba(255,255,255,.32);--fill-width:12px;}
+.kiro-model-panel-slider[value="0"],.kiro-model-panel-slider[aria-valuenow="0"]{--fill-width:12px !important;--dot0:#ffffff !important;--dot1:rgba(255,255,255,.32) !important;--dot2:rgba(255,255,255,.32) !important;--dot3:rgba(255,255,255,.32) !important;--dot4:rgba(255,255,255,.32) !important;}
+
+/* 2 档（max="1"：2 个刻度点） */
+.kiro-model-panel-slider[max="1"]::-webkit-slider-runnable-track{width:100% !important;height:18px !important;border-radius:999px !important;background-image:radial-gradient(circle at 12px 50%,var(--dot0) 0,var(--dot0) 2.5px,transparent 3.2px),radial-gradient(circle at calc(100% - 12px) 50%,var(--dot1) 0,var(--dot1) 2.5px,transparent 3.2px),linear-gradient(90deg,#c084fc 0%,#9333ea 40%,#7c3aed 70%,#4c1d95 100%),linear-gradient(rgba(255,255,255,.13),rgba(255,255,255,.13)) !important;background-size:100% 100%,100% 100%,var(--fill-width,12px) 100%,100% 100% !important;background-position:0 0,0 0,left center,0 0 !important;background-repeat:no-repeat !important;box-shadow:inset 0 1.5px 3px rgba(0,0,0,.45),inset 0 -1px 0 rgba(255,255,255,.08) !important;transition:background-size .12s cubic-bezier(.4,0,.2,1) !important;}
+.kiro-model-panel-slider[max="1"][aria-valuetext="Low" i],.kiro-model-panel-slider[max="1"][aria-valuetext="None" i],.kiro-model-panel-slider[max="1"][aria-valuetext="Off" i]{--fill-width:12px;--dot0:#ffffff;--dot1:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="1"][aria-valuetext="High" i],.kiro-model-panel-slider[max="1"][aria-valuetext="On" i]{--fill-width:100%;--dot0:#ffffff;--dot1:#ffffff;}
+
+/* 3 档（max="2"：3 个刻度点，如 GPT-5.5 / Claude） */
+.kiro-model-panel-slider[max="2"]::-webkit-slider-runnable-track{width:100% !important;height:18px !important;border-radius:999px !important;background-image:radial-gradient(circle at 12px 50%,var(--dot0) 0,var(--dot0) 2.5px,transparent 3.2px),radial-gradient(circle at 50% 50%,var(--dot1) 0,var(--dot1) 2.5px,transparent 3.2px),radial-gradient(circle at calc(100% - 12px) 50%,var(--dot2) 0,var(--dot2) 2.5px,transparent 3.2px),linear-gradient(90deg,#c084fc 0%,#9333ea 40%,#7c3aed 70%,#4c1d95 100%),linear-gradient(rgba(255,255,255,.13),rgba(255,255,255,.13)) !important;background-size:100% 100%,100% 100%,100% 100%,var(--fill-width,12px) 100%,100% 100% !important;background-position:0 0,0 0,0 0,left center,0 0 !important;background-repeat:no-repeat !important;box-shadow:inset 0 1.5px 3px rgba(0,0,0,.45),inset 0 -1px 0 rgba(255,255,255,.08) !important;transition:background-size .12s cubic-bezier(.4,0,.2,1) !important;}
+.kiro-model-panel-slider[max="2"][aria-valuetext="Low" i],.kiro-model-panel-slider[max="2"][aria-valuetext="None" i]{--fill-width:12px;--dot0:#ffffff;--dot1:rgba(255,255,255,.32);--dot2:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="2"][aria-valuetext="Medium" i]{--fill-width:50%;--dot0:#ffffff;--dot1:#ffffff;--dot2:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="2"][aria-valuetext="High" i]{--fill-width:100%;--dot0:#ffffff;--dot1:#ffffff;--dot2:#ffffff;}
+
+/* 4 档（max="3"：4 个刻度点） */
+.kiro-model-panel-slider[max="3"]::-webkit-slider-runnable-track{width:100% !important;height:18px !important;border-radius:999px !important;background-image:radial-gradient(circle at 12px 50%,var(--dot0) 0,var(--dot0) 2.5px,transparent 3.2px),radial-gradient(circle at calc(33.333% + 4px) 50%,var(--dot1) 0,var(--dot1) 2.5px,transparent 3.2px),radial-gradient(circle at calc(66.667% - 4px) 50%,var(--dot2) 0,var(--dot2) 2.5px,transparent 3.2px),radial-gradient(circle at calc(100% - 12px) 50%,var(--dot3) 0,var(--dot3) 2.5px,transparent 3.2px),linear-gradient(90deg,#c084fc 0%,#9333ea 40%,#7c3aed 70%,#4c1d95 100%),linear-gradient(rgba(255,255,255,.13),rgba(255,255,255,.13)) !important;background-size:100% 100%,100% 100%,100% 100%,100% 100%,var(--fill-width,12px) 100%,100% 100% !important;background-position:0 0,0 0,0 0,0 0,left center,0 0 !important;background-repeat:no-repeat !important;box-shadow:inset 0 1.5px 3px rgba(0,0,0,.45),inset 0 -1px 0 rgba(255,255,255,.08) !important;transition:background-size .12s cubic-bezier(.4,0,.2,1) !important;}
+.kiro-model-panel-slider[max="3"][aria-valuetext="None" i]{--fill-width:12px;--dot0:#ffffff;--dot1:rgba(255,255,255,.32);--dot2:rgba(255,255,255,.32);--dot3:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="3"][aria-valuetext="Low" i]{--fill-width:calc(33.333% + 4px);--dot0:#ffffff;--dot1:#ffffff;--dot2:rgba(255,255,255,.32);--dot3:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="3"][aria-valuetext="Medium" i]{--fill-width:calc(66.667% - 4px);--dot0:#ffffff;--dot1:#ffffff;--dot2:#ffffff;--dot3:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="3"][aria-valuetext="High" i],.kiro-model-panel-slider[max="3"][aria-valuetext="Max" i],.kiro-model-panel-slider[max="3"][aria-valuetext="xHigh" i]{--fill-width:100%;--dot0:#ffffff;--dot1:#ffffff;--dot2:#ffffff;--dot3:#ffffff;}
+
+/* 5 档（max="4"：5 个刻度点）及默认兜底 */
+.kiro-model-panel-slider[max="4"]::-webkit-slider-runnable-track,.kiro-model-panel-slider:not([max])::-webkit-slider-runnable-track{width:100% !important;height:18px !important;border-radius:999px !important;background-image:radial-gradient(circle at 12px 50%,var(--dot0) 0,var(--dot0) 2.5px,transparent 3.2px),radial-gradient(circle at calc(25% + 6px) 50%,var(--dot1) 0,var(--dot1) 2.5px,transparent 3.2px),radial-gradient(circle at 50% 50%,var(--dot2) 0,var(--dot2) 2.5px,transparent 3.2px),radial-gradient(circle at calc(75% - 6px) 50%,var(--dot3) 0,var(--dot3) 2.5px,transparent 3.2px),radial-gradient(circle at calc(100% - 12px) 50%,var(--dot4) 0,var(--dot4) 2.5px,transparent 3.2px),linear-gradient(90deg,#c084fc 0%,#9333ea 40%,#7c3aed 70%,#4c1d95 100%),linear-gradient(rgba(255,255,255,.13),rgba(255,255,255,.13)) !important;background-size:100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,var(--fill-width,12px) 100%,100% 100% !important;background-position:0 0,0 0,0 0,0 0,0 0,left center,0 0 !important;background-repeat:no-repeat !important;box-shadow:inset 0 1.5px 3px rgba(0,0,0,.45),inset 0 -1px 0 rgba(255,255,255,.08) !important;transition:background-size .12s cubic-bezier(.4,0,.2,1) !important;}
+.kiro-model-panel-slider[max="4"][aria-valuetext="None" i]{--fill-width:12px;--dot0:#ffffff;--dot1:rgba(255,255,255,.32);--dot2:rgba(255,255,255,.32);--dot3:rgba(255,255,255,.32);--dot4:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="4"][aria-valuetext="Low" i]{--fill-width:calc(25% + 6px);--dot0:#ffffff;--dot1:#ffffff;--dot2:rgba(255,255,255,.32);--dot3:rgba(255,255,255,.32);--dot4:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="4"][aria-valuetext="Medium" i]{--fill-width:50%;--dot0:#ffffff;--dot1:#ffffff;--dot2:#ffffff;--dot3:rgba(255,255,255,.32);--dot4:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="4"][aria-valuetext="High" i]{--fill-width:calc(75% - 6px);--dot0:#ffffff;--dot1:#ffffff;--dot2:#ffffff;--dot3:#ffffff;--dot4:rgba(255,255,255,.32);}
+.kiro-model-panel-slider[max="4"][aria-valuetext="Max" i],.kiro-model-panel-slider[max="4"][aria-valuetext="xHigh" i]{--fill-width:100%;--dot0:#ffffff;--dot1:#ffffff;--dot2:#ffffff;--dot3:#ffffff;--dot4:#ffffff;}
+
+.kiro-model-panel-slider::-webkit-slider-thumb{-webkit-appearance:none !important;appearance:none !important;width:24px !important;height:24px !important;border-radius:50% !important;background:#ffffff !important;margin-top:-3px !important;box-shadow:0 2px 6px rgba(0,0,0,.45),inset 0 1px 1px rgba(255,255,255,.8),0 0 1px rgba(0,0,0,.3) !important;cursor:pointer !important;transition:transform .12s ease,box-shadow .15s ease !important;}
+.kiro-model-panel-slider:hover::-webkit-slider-thumb{transform:scale(1.08) !important;box-shadow:0 3px 10px rgba(0,0,0,.5),0 0 10px rgba(168,85,247,.6) !important;}
+.kiro-model-panel-slider:active::-webkit-slider-thumb{transform:scale(.96) !important;}
 ${END}`;
 
 const ORIG_JS_PATTERN =
@@ -601,7 +720,7 @@ const SVG_OPENAI =
  * 4.13.52 及更早的变体把 `a2k-exclusive-model-option` 无条件写进 className，出厂列表也会带上该类。
  */
 const PATCHED_JS_CODE =
-  `className:"chat-input-popup-option"+(typeof k==="string"&&k.startsWith("__A2K_GRP__|")?" a2k-exclusive-model-option a2k-opt-grp":typeof k==="string"&&k.startsWith("__A2K_MDL__|")?(" a2k-exclusive-model-option a2k-opt-mdl"+(k.endsWith("|1")?" a2k-opt-last":"")):""),"data-selected":C||void 0,"data-active":S||void 0,role:"option","aria-selected":C,tabIndex:S?0:-1,...p({onClick:a((e)=>{if(T?.startsWith?.("a2k-group:")||(typeof k==="string"&&k.startsWith("__A2K_GRP__|"))||(typeof k==="string"&&k.startsWith("__A2K_")&&!E)){e?.preventDefault?.();e?.stopPropagation?.();return}g(T)},"onClick"),onKeyDown:a(O=>{if(T?.startsWith?.("a2k-group:")||(typeof k==="string"&&k.startsWith("__A2K_GRP__|"))||(typeof k==="string"&&k.startsWith("__A2K_")&&!E))return;O.key==="Enter"&&(O.preventDefault(),g(T))},"onKeyDown")}),children:(typeof k==="string"&&k.startsWith("__A2K_GRP__|"))?(()=>{const p=k.split("|");let logoHtml="";try{if(p[5]){logoHtml="<span class=\\\"a2k-logo\\\">"+atob(p[5])+"</span>";}}catch(_e){}if(!logoHtml){logoHtml=p[4]==="openai"?'<span class=\\"a2k-logo\\">${SVG_OPENAI}</span>':'<span class=\\"a2k-logo\\">'+(p[3]||"P")+'</span>';}return b.jsx("div",{className:"a2k-card-head",dangerouslySetInnerHTML:{__html:"<span class=\\\"a2k-chev\\\">▼</span>"+logoHtml+"<span class=\\\"a2k-title\\\">"+p[1]+"</span><span class=\\\"a2k-count\\\">"+p[2]+" ↑</span>"}})})():(typeof k==="string"&&k.startsWith("__A2K_MDL__|"))?(()=>{const p=k.split("|"),caps=(p[1]==="1"?'<span class=\\"a2k-cap a2k-cap-reason\\" title=\\"推理\\">${SVG_BRAIN}</span>':'')+(p[2]==="1"?'<span class=\\"a2k-cap a2k-cap-vision\\" title=\\"图片\\">${SVG_IMAGE}</span>':'');return b.jsx("div",{className:"a2k-model-row",dangerouslySetInnerHTML:{__html:"<div class=\\\"a2k-model-name-box\\\"><span class=\\\"chat-input-popup-option-name\\\" title=\\\""+E+"\\\">"+E+"</span></div><div class=\\\"a2k-caps-box\\\">"+caps+"</div>"}})})():b.jsxs("div",{className:"chat-input-popup-option-content",children:[b.jsxs("div",{className:"model-selector-option-header",children:[b.jsx("span",{className:"chat-input-popup-option-name",children:E}),R?.rateMultiplier!=null&&b.jsxs("span",{className:"model-selector-option-rate",children:[R.rateMultiplier,"x ",R.rateUnit??"credits"]})]}),k&&b.jsx("span",{className:"chat-input-popup-option-description",children:k})]})`;
+  `className:"chat-input-popup-option"+(typeof k==="string"&&k.startsWith("__A2K_GRP__|")?" a2k-exclusive-model-option a2k-opt-grp":typeof k==="string"&&k.startsWith("__A2K_MDL__|")?(" a2k-exclusive-model-option a2k-opt-mdl"+(k.endsWith("|1")?" a2k-opt-last":"")):""),"data-selected":C||void 0,"data-active":S||void 0,role:"option","aria-selected":C,tabIndex:S?0:-1,...p({onClick:a((e)=>{if(T?.startsWith?.("a2k-group:")||(typeof k==="string"&&k.startsWith("__A2K_GRP__|"))||(typeof k==="string"&&k.startsWith("__A2K_")&&!E)){e?.preventDefault?.();e?.stopPropagation?.();return}g(T)},"onClick"),onKeyDown:a(O=>{if(T?.startsWith?.("a2k-group:")||(typeof k==="string"&&k.startsWith("__A2K_GRP__|"))||(typeof k==="string"&&k.startsWith("__A2K_")&&!E))return;O.key==="Enter"&&(O.preventDefault(),g(T))},"onKeyDown")}),children:(typeof k==="string"&&k.startsWith("__A2K_GRP__|"))?(()=>{const p=k.split("|");let logoHtml="";try{if(p[5]){logoHtml="<span class=\\\"a2k-logo\\\">"+atob(p[5])+"</span>";}}catch(_e){}if(!logoHtml){logoHtml=p[4]==="openai"?'<span class=\\"a2k-logo\\">${SVG_OPENAI}</span>':'<span class=\\"a2k-logo\\">'+(p[3]||"P")+'</span>';}return b.jsx("div",{className:"a2k-card-head",dangerouslySetInnerHTML:{__html:"<span class=\\\"a2k-chev\\\">▼</span>"+logoHtml+"<span class=\\\"a2k-title\\\">"+p[1]+"</span>"}})})():(typeof k==="string"&&k.startsWith("__A2K_MDL__|"))?(()=>{const p=k.split("|"),caps=(p[1]==="1"?'<span class=\\"a2k-cap a2k-cap-reason\\" title=\\"推理\\"><span class=\\"a2k-cap-ico\\">${SVG_BRAIN}</span></span>':'')+(p[2]==="1"?'<span class=\\"a2k-cap a2k-cap-vision\\" title=\\"图片\\"><span class=\\"a2k-cap-ico\\">${SVG_IMAGE}</span></span>':'');return b.jsx("div",{className:"a2k-model-row",dangerouslySetInnerHTML:{__html:"<div class=\\\"a2k-model-name-box\\\"><span class=\\\"chat-input-popup-option-name\\\" title=\\\""+E+"\\\">"+E+"</span></div><div class=\\\"a2k-caps-box\\\">"+caps+"</div>"}})})():b.jsxs("div",{className:"chat-input-popup-option-content",children:[b.jsxs("div",{className:"model-selector-option-header",children:[b.jsx("span",{className:"chat-input-popup-option-name",children:E}),R?.rateMultiplier!=null&&b.jsxs("span",{className:"model-selector-option-rate",children:[R.rateMultiplier,"x ",R.rateUnit??"credits"]})]}),k&&b.jsx("span",{className:"chat-input-popup-option-description",children:k})]})`;
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -886,7 +1005,7 @@ function codeTokens(text: string): CodeToken[] {
   let last = 0;
   const pushCode = (from: number, to: number) => {
     let prev = from;
-    for (const m of text.slice(from, to).matchAll(IDENT_RE)) {
+    for (const m of [...text.slice(from, to).matchAll(IDENT_RE)]) {
       const at = from + (m.index as number);
       if (at > prev) out.push({ isIdent: false, text: text.slice(prev, at), at: prev });
       // `a.b` / `a?.b` 的 b 是属性名（不可压缩）；`...b` 是展开，b 仍是标识符
@@ -896,7 +1015,7 @@ function codeTokens(text: string): CodeToken[] {
     }
     if (prev < to) out.push({ isIdent: false, text: text.slice(prev, to), at: prev });
   };
-  for (const m of text.matchAll(splitScan)) {
+  for (const m of [...text.matchAll(splitScan)]) {
     const at = m.index as number;
     pushCode(last, at);
     out.push({ isIdent: false, text: m[0], at });
@@ -965,7 +1084,7 @@ function verifyTokens(canonical: string, actual: string): { map: Map<string, str
 function scanMasked(content: string, canonical: string): MaskedSpan[] {
   const hits: MaskedSpan[] = [];
   const seen = new Set<number>();
-  for (const m of content.matchAll(structuralRegex(canonical))) {
+  for (const m of [...content.matchAll(structuralRegex(canonical))]) {
     const start = m.index as number;
     if (seen.has(start)) continue;
     seen.add(start);
@@ -1029,7 +1148,7 @@ function renderMatched(template: string, canonical: string, span: MaskedSpan): s
     canonNames.push(t.text);
     actualNames.push(act);
   }
-  if (canonNames.length === 0) return null;
+  if (canonNames.length === 0) return template;
   if (namesCollide(template, canonNames, actualNames)) return null;
   return renderIdentifierMap(template, canonNames, actualNames);
 }
@@ -1254,7 +1373,8 @@ function findPopoverFactory(content: string): PopoverFactoryHit | null {
 function findPopoverCall(content: string, fn: string): SpanHit | null {
   const canonical = renderTemplate(ORIG_POPOVER_CALL_PATTERN, ["Bde"], [fn]);
   const span = matchMasked(content, canonical);
-  return span ? { start: span.start, end: span.end, text: span.text } : null;
+  if (!span || span.map.get(fn) !== fn) return null;
+  return { start: span.start, end: span.end, text: span.text };
 }
 
 const BACKEND_HOOK_RE = /function ([A-Za-z_$][\w$]*)\(t\)\{([A-Za-z_$][\w$]*)=t\}(?=function [A-Za-z_$][\w$]*\(\)\{return \2\})/g;
@@ -1275,7 +1395,7 @@ function usesGetAvailableModels(content: string, store: string): boolean {
  */
 function findBackendHook(content: string): BackendHookHit | null {
   const hits: BackendHookHit[] = [];
-  for (const m of content.matchAll(BACKEND_HOOK_RE)) {
+  for (const m of [...content.matchAll(BACKEND_HOOK_RE)]) {
     if (!usesGetAvailableModels(content, m[2])) continue;
     hits.push({ start: m.index as number, end: (m.index as number) + m[0].length, fn: m[1], store: m[2] });
     if (hits.length > 1) return null;
@@ -1798,7 +1918,7 @@ const ROW_FIX_CANON = ["b"];
  * 自有标识符全部带 `a2k` 前缀（namesCollide 判据，见 CTX_SEL_FN_TEMPLATE 的说明）。
  * **不许出现正则字面量**：codeTokens 不识别正则，里面的引号会打乱分词；HTML 转义用 split/join。
  */
-const ROW_FIX_TEMPLATE = `function a2kRowFix(a2kP){try{const a2kItem=a2kP&&a2kP.item,a2kOpt=a2kItem&&a2kItem.option,a2kD=a2kOpt&&a2kOpt.description;if(typeof a2kD!=="string"||!a2kD.startsWith("__A2K_"))return a2kP;const a2kEsc=a2kS=>String(a2kS==null?"":a2kS).split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;").split('"').join("&quot;");const a2kParts=a2kD.split("|");if(a2kParts[0]==="__A2K_GRP__"){let a2kLogo="";try{if(a2kParts[5])a2kLogo='<span class="a2k-logo">'+atob(a2kParts[5])+"</span>"}catch(a2kE){}if(!a2kLogo)a2kLogo=a2kParts[4]==="openai"?'<span class="a2k-logo">${SVG_OPENAI}</span>':'<span class="a2k-logo">'+a2kEsc(a2kParts[3]||"P")+"</span>";return{...a2kP,isSelected:!1,isActive:!1,itemProps:{"aria-disabled":"true","data-a2k-grp":"1",onClick:a2kEv=>{a2kEv&&a2kEv.preventDefault&&a2kEv.preventDefault();a2kEv&&a2kEv.stopPropagation&&a2kEv.stopPropagation()}},item:{...a2kItem,option:{...a2kOpt,description:b.jsx("span",{className:"a2k-card-head",dangerouslySetInnerHTML:{__html:'<span class="a2k-chev">▼</span>'+a2kLogo+'<span class="a2k-title">'+a2kEsc(a2kParts[1])+'</span><span class="a2k-count">'+a2kEsc(a2kParts[2])+" ↑</span>"}})}}}}if(a2kParts[0]==="__A2K_MDL__"){const a2kCaps=(a2kParts[1]==="1"?'<span class="a2k-cap a2k-cap-reason" title="推理">${SVG_BRAIN}</span>':"")+(a2kParts[2]==="1"?'<span class="a2k-cap a2k-cap-vision" title="图片">${SVG_IMAGE}</span>':"");return{...a2kP,item:{...a2kItem,option:{...a2kOpt,description:a2kCaps?b.jsx("span",{className:"a2k-caps-box",dangerouslySetInnerHTML:{__html:a2kCaps}}):void 0}}}}return a2kP}catch(a2kErr){return a2kP}}`;
+const ROW_FIX_TEMPLATE = `function a2kRowFix(a2kP){try{const a2kItem=a2kP&&a2kP.item,a2kOpt=a2kItem&&a2kItem.option,a2kD=a2kOpt&&a2kOpt.description;if(typeof a2kD!=="string"||!a2kD.startsWith("__A2K_"))return a2kP;const a2kEsc=a2kS=>String(a2kS==null?"":a2kS).split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;").split('"').join("&quot;");const a2kParts=a2kD.split("|");if(a2kParts[0]==="__A2K_GRP__"){let a2kLogo="";try{if(a2kParts[5])a2kLogo='<span class="a2k-logo">'+atob(a2kParts[5])+"</span>"}catch(a2kE){}if(!a2kLogo)a2kLogo=a2kParts[4]==="openai"?'<span class="a2k-logo">${SVG_OPENAI}</span>':'<span class="a2k-logo">'+a2kEsc(a2kParts[3]||"P")+"</span>";return{...a2kP,isSelected:!1,isActive:!1,itemProps:{"aria-disabled":"true","data-a2k-grp":"1",onClick:a2kEv=>{a2kEv&&a2kEv.preventDefault&&a2kEv.preventDefault();a2kEv&&a2kEv.stopPropagation&&a2kEv.stopPropagation()}},item:{...a2kItem,option:{...a2kOpt,description:b.jsx("span",{className:"a2k-card-head",dangerouslySetInnerHTML:{__html:'<span class="a2k-chev">▼</span>'+a2kLogo+'<span class="a2k-title">'+a2kEsc(a2kParts[1])+'</span>'}})}}}}if(a2kParts[0]==="__A2K_MDL__"){const a2kCaps=(a2kParts[1]==="1"?'<span class="a2k-cap a2k-cap-reason" title="推理"><span class="a2k-cap-ico">${SVG_BRAIN}</span></span>':"")+(a2kParts[2]==="1"?'<span class="a2k-cap a2k-cap-vision" title="图片"><span class="a2k-cap-ico">${SVG_IMAGE}</span></span>':"");return{...a2kP,itemProps:{...(a2kP.itemProps||{}),"data-a2k-mdl":"1",...(a2kParts[5]==="1"?{"data-a2k-last":"1"}:{})},item:{...a2kItem,option:{...a2kOpt,description:a2kCaps?b.jsx("span",{className:"a2k-caps-box",dangerouslySetInnerHTML:{__html:a2kCaps}}):void 0}}}}return a2kP}catch(a2kErr){return a2kP}}function a2kReorder(a2kItems,a2kCurId){if(!a2kItems||!a2kItems.length||!a2kCurId)return a2kItems;try{const a2kGroups=[];let a2kCurGrp=null,a2kTargetIdx=-1;for(let a2kIdx=0;a2kIdx<a2kItems.length;a2kIdx++){const a2kIt=a2kItems[a2kIdx],a2kD=a2kIt&&a2kIt.option&&a2kIt.option.description;const a2kIsG=typeof a2kD==="string"&&a2kD.startsWith("__A2K_GRP__|");if(a2kIsG||!a2kCurGrp){a2kCurGrp={header:a2kIsG?a2kIt:null,items:a2kIsG?[]:[a2kIt]};a2kGroups.push(a2kCurGrp)}else{a2kCurGrp.items.push(a2kIt)}if(a2kIt&&a2kIt.option&&a2kIt.option.value===a2kCurId){a2kTargetIdx=a2kGroups.length-1}}if(a2kTargetIdx>0){const a2kTarget=a2kGroups.splice(a2kTargetIdx,1)[0];a2kGroups.unshift(a2kTarget)}const a2kRes=[];for(let a2kG=0;a2kG<a2kGroups.length;a2kG++){const a2kGroup=a2kGroups[a2kG];if(a2kGroup.header)a2kRes.push(a2kGroup.header);for(let a2kM=0;a2kM<a2kGroup.items.length;a2kM++){a2kRes.push(a2kGroup.items[a2kM])}}return a2kRes}catch(_e){return a2kItems}}function a2kSyncSlider(a2kEl){if(!a2kEl)return;try{const a2kMin=Number(a2kEl.min)||0,a2kMax=Number(a2kEl.max)||1,a2kVal=Number(a2kEl.value)||0;const a2kP=a2kMax>a2kMin?(a2kVal-a2kMin)/(a2kMax-a2kMin):0;a2kEl.style.setProperty("--fill-width","calc(12px + "+a2kP+" * (100% - 24px))");for(let a2kI=0;a2kI<=4;a2kI++){a2kEl.style.setProperty("--dot"+a2kI,a2kI<=a2kVal?"#ffffff":"rgba(255,255,255,0.32)")}}catch(_e){}}function a2kRenderCodexHeader(a2kCurId,a2kEffort,a2kDefEffort,a2kItems,a2kIsExp,a2kSetExp,a2kSetEffort){try{let a2kModelName="Auto";if(a2kCurId&&a2kItems){for(let a2kIdx=0;a2kIdx<a2kItems.length;a2kIdx++){const a2kOpt=a2kItems[a2kIdx]&&a2kItems[a2kIdx].option;if(a2kOpt&&a2kOpt.value===a2kCurId){a2kModelName=a2kOpt.name||a2kCurId;break}}if(a2kModelName==="Auto"&&a2kCurId){a2kModelName=a2kCurId}}const a2kEffortLabel=a2kEffort||a2kDefEffort||"Default";const a2kIsDefault=a2kDefEffort?a2kEffort===a2kDefEffort:!a2kEffort;setTimeout(function(){try{if(typeof document!=="undefined"){const a2kSliders=document.querySelectorAll(".kiro-model-panel-slider");for(let a2kK=0;a2kK<a2kSliders.length;a2kK++)a2kSyncSlider(a2kSliders[a2kK])}}catch(_e){}},0);return b.jsxs("div",{className:"a2k-codex-header"+(a2kIsExp?" a2k-exp":""),children:[b.jsxs("button",{type:"button",className:"a2k-codex-capsule",onClick:a2kEv=>{a2kEv&&a2kEv.preventDefault&&a2kEv.preventDefault();a2kEv&&a2kEv.stopPropagation&&a2kEv.stopPropagation();a2kSetExp(!a2kIsExp)},title:a2kIsExp?"收起模型列表":"展开模型列表",children:[b.jsx("span",{className:"a2k-codex-capsule-model",children:a2kModelName}),b.jsxs("span",{className:"a2k-codex-capsule-effort",children:[a2kEffortLabel," ",b.jsx("span",{className:"a2k-codex-capsule-arrow",children:a2kIsExp?"▾":"›"})]})]}),b.jsx("button",{type:"button",className:"a2k-codex-reset"+(a2kIsDefault?" a2k-dimmed":""),onClick:a2kEv=>{a2kEv&&a2kEv.preventDefault&&a2kEv.preventDefault();a2kEv&&a2kEv.stopPropagation&&a2kEv.stopPropagation();if(a2kDefEffort&&a2kSetEffort)a2kSetEffort(a2kDefEffort)},title:"Reset to default effort"+(a2kDefEffort?" ("+a2kDefEffort+")":""),dangerouslySetInnerHTML:{__html:'<svg viewBox=\\"0 0 24 24\\" width=\\"14\\" height=\\"14\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"2\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\"><path d=\\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\\"/><path d=\\"M3 3v5h5\\"/></svg>'}})]})}catch(_e){return null}}if(typeof document!=="undefined"&&!window.__a2kSliderBound){window.__a2kSliderBound=!0;document.addEventListener("input",function(a2kE){try{const a2kT=a2kE.target;if(a2kT&&a2kT.classList&&a2kT.classList.contains("kiro-model-panel-slider"))a2kSyncSlider(a2kT)}catch(_e){}},!0);document.addEventListener("change",function(a2kE){try{const a2kT=a2kE.target;if(a2kT&&a2kT.classList&&a2kT.classList.contains("kiro-model-panel-slider"))a2kSyncSlider(a2kT)}catch(_e){}},!0);document.addEventListener("pointerdown",function(a2kE){try{const a2kT=a2kE.target;if(a2kT&&a2kT.closest){const a2kSec=a2kT.closest(".kiro-model-panel-section");if(a2kSec){const a2kS=a2kSec.querySelector(".kiro-model-panel-slider");if(a2kS)a2kSyncSlider(a2kS)}}}catch(_e){}},!0);try{const a2kObs=new MutationObserver(function(a2kMList){for(let a2kM=0;a2kM<a2kMList.length;a2kM++){const a2kRec=a2kMList[a2kM];if(a2kRec.type==="childList"){const a2kSliders=document.querySelectorAll(".kiro-model-panel-slider");for(let a2kK=0;a2kK<a2kSliders.length;a2kK++)a2kSyncSlider(a2kSliders[a2kK]);break}else if(a2kRec.target&&a2kRec.target.classList&&a2kRec.target.classList.contains("kiro-model-panel-slider")){a2kSyncSlider(a2kRec.target)}}});a2kObs.observe(document.body||document.documentElement,{childList:!0,subtree:!0,attributes:!0,attributeFilter:["value","aria-valuetext","aria-valuenow"]})}catch(_e){}}`;
 /** writeModel 守卫：分组标题的 modelId 前缀（与 src/modelStore.ts 的 GROUP_HEADER_PREFIX 一致；不 import，本模块只依赖 fs/path/vscode/log）。 */
 const ROW_GUARD_PREFIX = "a2k-group:";
 
@@ -1839,16 +1959,82 @@ function modelPanelGuardText(g: string): string {
   return `${ROW_START}if(typeof ${g}==="string"&&${g}.startsWith("${ROW_GUARD_PREFIX}"))return;${ROW_END}`;
 }
 
+const PANEL_TAG_RE = /(?<![\w$.])([A-Za-z_$][\w$]*)\(([A-Za-z_$][\w$]*),"ModelPanel"\);/g;
+
+type ModelPanelHit = {
+  fn: string;
+  bodyStart: number;
+  classPos: number;
+  childrenPos: number;
+  selId: string;
+  effort: string;
+  defEffort: string;
+  visOpt: string;
+  query: string;
+  action: string;
+  reactId: string;
+};
+
+/** 1.2 代 ModelPanel 容器靶点（折叠/展开胶囊顶栏与活跃供应商置顶）。 */
+function findModelPanel(content: string): ModelPanelHit | null {
+  const tags = [...content.matchAll(PANEL_TAG_RE)];
+  if (tags.length !== 1) return null;
+  const fn = tags[0][2];
+  const tagAt = tags[0].index as number;
+  const headRe = new RegExp(`(?<![\\w$.])function ${escapeRe(fn)}\\(\\{([^)]*)\\}\\)\\{`, "g");
+  const heads = [...content.matchAll(headRe)];
+  if (heads.length !== 1) return null;
+  const headAt = heads[0].index as number;
+  if (headAt >= tagAt || tagAt - headAt > ROW_FN_MAX_SPAN) return null;
+  const params = heads[0][1];
+  const bodyStart = headAt + heads[0][0].length;
+  const body = content.slice(bodyStart, tagAt);
+
+  const extractProp = (pname: string): string | null => {
+    const m = new RegExp(`(?<![\\w$.])${escapeRe(pname)}:([A-Za-z0-9_$]+)`).exec(params);
+    return m ? m[1] : null;
+  };
+
+  const selId = extractProp("selectedModelId");
+  const effort = extractProp("effort");
+  const defEffort = extractProp("defaultEffortLevel");
+  const visOpt = extractProp("visibleOptions");
+  const query = extractProp("query");
+  const action = extractProp("onAction");
+  if (!selId || !effort || !defEffort || !visOpt || !query || !action) return null;
+
+  const reactM = /(?<![\w$.])([A-Za-z0-9_$]+)\.useId\(\)/g.exec(body);
+  const reactId = reactM ? reactM[1] : "C";
+
+  const targetStr = 'className:"kiro-model-panel-body",children:[';
+  const targetIdx = content.indexOf(targetStr, bodyStart);
+  if (targetIdx < 0 || targetIdx > tagAt) return null;
+
+  const classPos = targetIdx + 'className:"kiro-model-panel-body"'.length;
+  const childrenPos = targetIdx + targetStr.length;
+
+  return { fn, bodyStart, classPos, childrenPos, selId, effort, defEffort, visOpt, query, action, reactId };
+}
+
 /** 在出厂内容上打 v2 三处；三处全中且无撞名才写，否则 null。 */
 function applyModelPanelRow(content: string): string | null {
   const hit = findModelPanelRow(content);
   if (!hit) return null;
   if (namesCollide(ROW_FIX_TEMPLATE, ROW_FIX_CANON, [hit.jsx])) return null;
-  const spans = [
+  const spans: { at: number; text: string }[] = [
     { at: hit.tagEnd, text: ROW_START + renderTemplate(ROW_FIX_TEMPLATE, ROW_FIX_CANON, [hit.jsx]) + ROW_END },
     { at: hit.bodyStart, text: `${ROW_START}${hit.param}=${ROW_FIX_FN}(${hit.param});${ROW_END}` },
     { at: hit.guardAt, text: modelPanelGuardText(hit.guardParam) },
-  ].sort((x, y) => y.at - x.at);
+  ];
+  const pHit = findModelPanel(content);
+  if (pHit) {
+    spans.push(
+      { at: pHit.bodyStart, text: `${ROW_START}const [a2kExp,a2kSetExp]=${pHit.reactId}.useState(!1);${pHit.visOpt}=a2kReorder(${pHit.visOpt},${pHit.selId});const a2kIsExp=a2kExp||(typeof ${pHit.query}==="string"&&${pHit.query}.trim().length>0);${ROW_END}` },
+      { at: pHit.classPos, text: `${ROW_START}+(a2kIsExp?" a2k-expanded":" a2k-collapsed")${ROW_END}` },
+      { at: pHit.childrenPos, text: `${ROW_START}a2kRenderCodexHeader(${pHit.selId},${pHit.effort},${pHit.defEffort},${pHit.visOpt},a2kIsExp,a2kSetExp,typeof ${pHit.action}==="function"?a2kL=>${pHit.action}({type:"setEffort",level:a2kL}):void 0),${ROW_END}` }
+    );
+  }
+  spans.sort((x, y) => y.at - x.at);
   let out = content;
   for (const s of spans) out = out.slice(0, s.at) + s.text + out.slice(s.at);
   return out;
@@ -2062,7 +2248,7 @@ function applyPopover(content: string): string | null {
   if (!callSpan) return null;
   if (!callSpan.text.endsWith("})")) return null;
   const store = POPOVER_STORE_NAME;
-  const patchedCall = `${callSpan.text.slice(0, -2)},a2kUsage:typeof ${store}==="undefined"?void 0:${store}})`;
+  const patchedCall = `${callSpan.text.slice(0, -2)},a2kUsage:${store}})`;
   // 两段互不重叠；从后往前拼，前一段的偏移不受影响
   const spans = [
     { start: fac.start, end: fac.end, text: patchedFn },
@@ -2152,6 +2338,15 @@ const SELECTOR_PATCH_MARKS = ["a2k-model-name-box", "a2k-card-head", "a2k-exclus
  * 一份都没有（目录不存在 / 不可读，或真机确实没有模型选择器靶点）→ unavailable 且无文件。
  */
 async function planModelSelectorScript(enabled: boolean, pkgs: SelectorPackage[]): Promise<TargetPlan> {
+  if (pkgs.length === 0) {
+    return {
+      status: "unavailable",
+      files: [],
+      extras: { ctxSelector: "unavailable" },
+      packages: [],
+      detail: "no carrier packages found",
+    };
+  }
   const files: FilePlan[] = [];
   const states: SelectorPkgState[] = [];
   let ctxBefore = false;
@@ -2176,13 +2371,8 @@ async function planModelSelectorScript(enabled: boolean, pkgs: SelectorPackage[]
   const ctxMissed = states.filter((s) => !s.ctx).map((s) => s.pkg);
   // 可选组的 ctx 状态也逐 package：全中才是 applied；一份不全中就是 unavailable，
   // 不能因为「有一个 package 成了」就报成功（该视图的聊天框没有下拉）。
-  const ctxSelector: TargetStatus = enabled
-    ? states.length > 0 && ctxMissed.length === 0
-      ? "applied"
-      : "unavailable"
-    : ctxBefore
-      ? "removed"
-      : "unchanged";
+  const ctxAfter = states.length > 0 && ctxMissed.length === 0;
+  const ctxSelector: TargetStatus = ctxStatus(enabled, ctxBefore, ctxAfter);
   const extras = { ctxSelector };
   const base = { files, extras, packages: states };
   // 开启路径上「有承载 package 没打上」= 半套补丁：报 unavailable 并把落地的 / 没落地的 package 都点名，
@@ -2267,6 +2457,9 @@ function stripStrayA2kRules(css: string): string {
  * 部分可读部分不可读 → 能写的照写，读失败进 detail 上浮。
  */
 async function planStyleSheet(plans: Array<{ file: string; enabled: boolean }>): Promise<TargetPlan> {
+  if (plans.length === 0) {
+    return { status: "unavailable", detail: "no style targets found", files: [] };
+  }
   const files: FilePlan[] = [];
   const errors: string[] = [];
   let anyOn = false;
@@ -2615,6 +2808,8 @@ export const __selectorStyleInternals = {
   SELECTOR_PATCH_MARKS,
   /** 结构匹配器：模板以 1.0.411 压缩名书写，名字按结构捕获 / 反查 / 渲染。 */
   matchers: {
+    templateRegex: structuralRegex,
+    structuralRegex,
     renderTemplate,
     namesCollide,
     /** 剥掉 CARD_CSS 标记块与 a2k- 孤儿规则，供 dev/verify-selector-patch.js 把 fixture 归一为出厂。 */

@@ -74,8 +74,18 @@ module.exports = {
 
 function compile() {
   execFileSync(
-    path.join(REPO, "node_modules/.bin/tsc"),
-    ["-p", path.join(REPO, "tsconfig.json"), "--outDir", BUILD, "--noEmit", "false", "--sourceMap", "false"],
+    process.execPath,
+    [
+      path.join(REPO, "node_modules/typescript/bin/tsc"),
+      "-p",
+      path.join(REPO, "tsconfig.json"),
+      "--outDir",
+      BUILD,
+      "--noEmit",
+      "false",
+      "--sourceMap",
+      "false",
+    ],
     { stdio: "inherit" }
   );
 }

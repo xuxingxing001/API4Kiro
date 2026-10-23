@@ -3255,6 +3255,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 
   /* key 池（编辑弹窗里的凭证列表）：一行一把，拖柄 / 序号 / 名字·掩码 / 状态胶囊 / 操作 */
+  .khead-row { display:flex; align-items:center; justify-content:space-between; margin:8px 0 4px; min-height:26px; }
+  .khead-row label { margin:0; font-size:12px; color:var(--muted); }
+  .khead-actions { display:flex; align-items:center; gap:6px; }
+  .khead-actions .seg { flex:none; }
+  .khead-actions .seg button { padding:2px 7px; font-size:10px; height:24px; line-height:18px; }
+  .khead-actions .btn-connect.btn-sq { width:24px; height:24px; border-radius:6px; flex:none; }
+  .khead-actions .btn-connect.btn-sq svg { width:13px; height:13px; }
   .kpool { border:1px solid var(--border); border-radius:8px; background:var(--card2); margin-top:4px; overflow:hidden; }
   .kphead { display:flex; align-items:center; gap:8px; padding:6px 8px; font-size:11px; color:var(--muted); border-bottom:1px solid var(--border); }
   .kphead .t { flex:1 1 auto; min-width:0; font-weight:600; }
@@ -3313,7 +3320,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   .mgrouphead .picon { width:20px; height:20px; flex:none; }
   .mgrouphead .picon.mono { font-size:10px; }
   .mgrouphead .gn { font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; flex:0 1 auto; }
-  .mgrouphead .gc { font-size:11px; color:var(--muted); flex:1 0 auto; white-space:nowrap; }
+  .mgrouphead .gc { display:none !important; font-size:11px; color:var(--muted); flex:1 0 auto; white-space:nowrap; }
   .mgrouphead .btn { flex:none; }
   .msum { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
   .msum .warn { color:var(--yellow); }
@@ -3350,6 +3357,64 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   .mgroup.open .gchev { transform:rotate(90deg); }
   .mgroup .gbody.collapsed { display:none; }
 
+  /* 模型卡片头部吸顶：用户向下滚动长列表时，标题行与「编辑」按钮粘滞在顶部随时可用 */
+  #selectedCard { position:relative; }
+  #selectedCard > .cardhead {
+    position: sticky;
+    top: -10px;
+    z-index: 20;
+    margin: -12px -12px 6px -12px;
+    padding: 10px 12px 8px;
+    background: linear-gradient(180deg, var(--card) 0%, rgba(26,22,34,.98) 100%);
+    border-bottom: 1px solid rgba(var(--accent-edge), .18);
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* 模型卡片底部的轻量辅助条：列表滚动到底部时的操作闭环 */
+  .models-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255, 255, 255, .08);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .models-foot .mfoot-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+  }
+  .models-foot .btn-xs {
+    font-size: 11px;
+    padding: 2px 8px;
+    height: 22px;
+    line-height: 18px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(255, 255, 255, .1);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .models-foot .btn-xs:hover {
+    background: rgba(var(--accent-rgb), .15);
+    border-color: rgba(var(--accent-edge), .4);
+    color: rgb(var(--accent-edge));
+  }
+  .models-foot .btn-xs.on {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 8px rgba(var(--accent-rgb), .3);
+  }
+
   /* 模型页的分组卡：一个渠道一张薄卡——1px 极淡描边、自上而下几乎看不出的紫→透明渐变、
      组头一条略亮的带子；行间用极淡实线（不再是虚线）。目的是让眼睛先看到"几组"再看到"几行"，
      而不是一屏几十行平铺。颜色都压得很低，久看不累；悬停时描边微微泛紫，算是唯一的动效。 */
@@ -3370,7 +3435,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   #selectedList .mgrouphead.fold:active { cursor:grabbing; }
   #selectedList .mgroup:not(.open) .mgrouphead.fold { border-bottom-color:transparent; }
   #selectedList .mgrouphead.fold:hover { background:rgba(255,255,255,.05); }
-  #selectedList .mgrouphead .gc { opacity:.8; }
+  #selectedList .mgrouphead .gc { display:none !important; opacity:.8; }
+  #modelSummary, .mfoot-tip { display:none !important; }
   /* 预选模型所在的渠道卡：描边与顶部渐变泛紫一档、一圈很淡的光晕、组名亮起——
      和行内「预选」胶囊同一色系但轻得多，只是把视线引到这一组，不和胶囊抢 */
   #selectedList .mgroup.cur { border-color:rgba(var(--accent-rgb),.45); box-shadow:0 0 10px rgba(var(--accent-rgb),.16);
@@ -3386,6 +3452,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     #selectedList .mline.selected, #selectedList .mline.checked, #selectedList .mline.checked:hover, #selectedList .mline.editing:hover { margin:2px 0; padding-left:8px; padding-right:8px; border-radius:6px; }
   #selectedList .mline.selected { background:rgba(var(--accent-rgb),.18); border:none; box-shadow:none; }
 /* 能力标签在页面上只是"说明"，不是按钮：去掉底色、描边压淡、字色略收，悬停到该行时才回到全色 */
+  #selectedList .cap { width:20px; height:20px; padding:0; justify-content:center; }
+  #selectedList .cap .lbl { display:none !important; }
+  #selectedList .cap .ico { width:13px; height:13px; justify-content:center; }
+  #selectedList .cap .ico svg { width:13px; height:13px; }
   #selectedList .cap.reason { background:transparent; border-color:rgba(255,166,87,.26); color:rgba(255,178,107,.78); }
   #selectedList .cap.vision { background:transparent; border-color:rgba(57,197,207,.26); color:rgba(95,212,220,.78); }
   #selectedList .mline:hover .cap.reason { border-color:rgba(255,166,87,.5); color:#ffb26b; }
@@ -3665,6 +3735,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         </div>
       </div>
       <div id="selectedList"></div>
+      <div class="models-foot hidden" id="modelsFoot">
+        <span class="mfoot-tip" id="modelsFootTip">共 0 个模型</span>
+        <div class="mfoot-actions">
+          <button class="btn btn-ghost btn-xs" id="footEditModels" title="批量编辑：勾选要移出 Kiro 列表的模型">批量编辑</button>
+          <button class="btn btn-ghost btn-xs" id="footScrollTop" title="平滑滚动回到顶部">回到顶部 ↑</button>
+        </div>
+      </div>
     </div>
     <!-- 批量编辑操作条：只在编辑态出现，浮在面板底部 -->
     <div class="editbar hidden" id="editBar">
@@ -4921,7 +4998,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         selCard(list, '自定义', null, true).appendChild(selRow(CUSTOM_PRESET));
       }
     }
-    q.addEventListener('input', render);
+    let isComposing = false;
+    q.addEventListener('compositionstart', () => { isComposing = true; });
+    q.addEventListener('compositionend', () => { isComposing = false; render(); });
+    q.addEventListener('input', (e) => { if (isComposing || (e && e.isComposing)) return; render(); });
     clr.addEventListener('click', () => { q.value = ''; render(); q.focus(); });
     q.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); if (q.value) { q.value = ''; render(); } else closeModal(); } });
     render();
@@ -4964,7 +5044,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     const back = document.createElement('button'); back.className = 'btn btn-ghost'; back.textContent = '‹ 返回';
     back.addEventListener('click', openSelectModal); foot.appendChild(back);
     modal.appendChild(foot);
-    q.addEventListener('input', render);
+    let isAllComposing = false;
+    q.addEventListener('compositionstart', () => { isAllComposing = true; });
+    q.addEventListener('compositionend', () => { isAllComposing = false; render(); });
+    q.addEventListener('input', (e) => { if (isAllComposing || (e && e.isComposing)) return; render(); });
     clr.addEventListener('click', () => { q.value = ''; render(); q.focus(); });
     q.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); if (q.value) { q.value = ''; render(); } else openSelectModal(); } });
     render();
@@ -5395,8 +5478,48 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     host.innerHTML = '<div class="tools">'
       + '<button class="btn btn-ghost btn-sm pLat" title="GET /models，量到收到响应头的时间">测延迟</button><span class="tres pLatRes"></span>'
       + '<button class="btn btn-ghost btn-sm pFetch" title="拉取该地址的模型清单">' + (st.models.length ? '刷新模型' : '拉取模型') + '</button><span class="tres pFetchRes"></span>'
-      + '</div><div class="plist hidden"></div>';
+      + '</div><div class="plist hidden">'
+      + '<div class="phead"></div>'
+      + '<div class="search psearch hidden"><input class="sq" type="text" placeholder="搜索模型…" spellcheck="false" autocomplete="off"><button class="sclear hidden" title="清空">✕</button></div>'
+      + '<div class="prows"></div>'
+      + '<div class="pfootbox"></div>'
+      + '</div>';
     const latRes = host.querySelector('.pLatRes'), fetchRes = host.querySelector('.pFetchRes'), list = host.querySelector('.plist');
+    const phead = list.querySelector('.phead');
+    const psearch = list.querySelector('.psearch');
+    const psq = psearch.querySelector('.sq');
+    const psclear = psearch.querySelector('.sclear');
+    const prows = list.querySelector('.prows');
+    const pfootbox = list.querySelector('.pfootbox');
+
+    let isPsqComposing = false;
+    const applyPsqSearch = () => {
+      st.q = psq.value;
+      psclear.classList.toggle('hidden', !st.q);
+      renderList();
+    };
+    psq.addEventListener('compositionstart', () => { isPsqComposing = true; });
+    psq.addEventListener('compositionend', () => { isPsqComposing = false; applyPsqSearch(); });
+    psq.addEventListener('input', (e) => {
+      if (isPsqComposing || (e && e.isComposing)) return;
+      applyPsqSearch();
+    });
+    psclear.addEventListener('click', () => {
+      psq.value = '';
+      st.q = '';
+      psclear.classList.add('hidden');
+      renderList();
+      psq.focus();
+    });
+    psq.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && psq.value) {
+        e.preventDefault();
+        psq.value = '';
+        st.q = '';
+        psclear.classList.add('hidden');
+        renderList();
+      }
+    });
 
     // 成功/进行中的结果紧跟按钮；失败原因独占一行完整显示（前面标上是哪个动作的）
     function paintTools() {
@@ -5445,24 +5568,30 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     }
 
     function renderList() {
-      if (!st.models.length) { list.classList.add('hidden'); list.innerHTML = ''; return; }
+      if (!st.models.length) {
+        list.classList.add('hidden');
+        phead.innerHTML = '';
+        psearch.classList.add('hidden');
+        prows.innerHTML = '';
+        pfootbox.innerHTML = '';
+        return;
+      }
       list.classList.remove('hidden');
       const shown = shownModels();
       const vals = Object.values(st.results);
       const okN = vals.filter((r) => r.ok).length, badN = vals.filter((r) => !r.ok).length;
-      list.innerHTML = '';
-      const head = document.createElement('div'); head.className = 'phead';
+      phead.innerHTML = '';
       if (opts.selectable && shown.length) {
         // 全选：三态勾选框，作用于当前列出（搜索过滤后）的模型
         const allOn = shown.every((m) => st.checked.has(m.id)), someOn = shown.some((m) => st.checked.has(m.id));
         const ck = ckEl(allOn ? 'on' : someOn ? 'some' : ''); ck.classList.add('pall');
         ck.title = allOn ? '取消全选' : ('全选' + (st.q.trim() ? '（当前搜索结果）' : ''));
         ck.addEventListener('click', () => { for (const m of shown) { if (allOn) st.checked.delete(m.id); else st.checked.add(m.id); } renderList(); });
-        head.appendChild(ck);
+        phead.appendChild(ck);
       }
       const title = document.createElement('span'); title.className = 'ptitle';
       title.textContent = (st.q.trim() ? shown.length + ' / ' : '') + st.models.length + ' 个模型' + (okN || badN ? ' · ✓ ' + okN + (badN ? ' · ✗ ' + badN : '') : '') + (opts.selectable && st.checked.size ? ' · 已选 ' + st.checked.size : '');
-      head.appendChild(title);
+      phead.appendChild(title);
       if (opts.selectable && okN) {
         // 一键选活：把测活通过的全部勾上（不动没测 / 没过的）
         const passIds = Object.keys(st.results).filter((id) => st.results[id].ok);
@@ -5471,28 +5600,27 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         alive.textContent = allPassed ? '已选活' : '选活'; alive.disabled = allPassed;
         alive.title = allPassed ? '测活通过的都已勾选' : ('勾选全部测活通过的模型（' + passIds.filter((id) => !st.checked.has(id)).length + ' 个未勾）');
         alive.addEventListener('click', () => { for (const id of passIds) st.checked.add(id); renderList(); });
-        head.appendChild(alive);
+        phead.appendChild(alive);
       }
       if (st.running) {
         const cancel = document.createElement('button'); cancel.className = 'btn btn-ghost btn-sm';
         cancel.innerHTML = '<span class="spin"></span>' + st.batchDone + ' / ' + st.batchTotal + ' · 取消';
         cancel.addEventListener('click', () => { vscode.postMessage({ type: 'cancelTests', batchId: st.batchId }); finishBatch(st.batchId); });
-        head.appendChild(cancel);
+        phead.appendChild(cancel);
       } else {
         const batch = document.createElement('button'); batch.className = 'btn btn-ghost btn-sm'; batch.textContent = '批量测活';
         batch.title = '给列出的模型各发一条最小请求（最多 ' + BATCH_CAP + ' 个，勾选/已选的优先）';
         batch.addEventListener('click', () => startTests(batchTargets(), true));
-        head.appendChild(batch);
+        phead.appendChild(batch);
       }
-      list.appendChild(head);
-      if (st.models.length > 8) {
-        const sw = document.createElement('div'); sw.className = 'search psearch';
-        sw.innerHTML = '<input class="sq" type="text" placeholder="搜索模型…" spellcheck="false" autocomplete="off"><button class="sclear' + (st.q ? '' : ' hidden') + '" title="清空">✕</button>';
-        const q = sw.querySelector('.sq'); q.value = st.q;
-        q.addEventListener('input', () => { st.q = q.value; renderList(); const nq = list.querySelector('.psearch .sq'); if (nq) { nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length); } });
-        sw.querySelector('.sclear').addEventListener('click', () => { st.q = ''; renderList(); });
-        list.appendChild(sw);
+
+      psearch.classList.toggle('hidden', st.models.length <= 8);
+      psclear.classList.toggle('hidden', !st.q);
+      if (document.activeElement !== psq && psq.value !== st.q) {
+        psq.value = st.q;
       }
+
+      prows.innerHTML = '';
       for (const m of shown.slice(0, 500)) {
         const r = st.results[m.id], pend = st.pending.has(m.id);
         const row = document.createElement('div'); row.className = 'prowm' + (r ? (r.ok ? ' live' : ' dead') : '');
@@ -5521,14 +5649,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           row.appendChild(pst);
           row.appendChild(tb);
         }
-        list.appendChild(row);
+        prows.appendChild(row);
       }
-      if (shown.length > 500) { const e = document.createElement('div'); e.className = 'pfoot'; e.textContent = '只显示前 500 个，请用搜索缩小范围'; list.appendChild(e); }
+      pfootbox.innerHTML = '';
+      if (shown.length > 500) { const e = document.createElement('div'); e.className = 'pfoot'; e.textContent = '只显示前 500 个，请用搜索缩小范围'; pfootbox.appendChild(e); }
       if (opts.selectable && st.checked.size) {
         const foot = document.createElement('div'); foot.className = 'pfoot';
         const s = document.createElement('span'); s.textContent = '已勾选 ' + st.checked.size + ' 个，连接后直接进入 Kiro 列表'; foot.appendChild(s);
         const clr = document.createElement('span'); clr.className = 'lnk'; clr.textContent = '清空'; clr.addEventListener('click', () => { st.checked.clear(); renderList(); }); foot.appendChild(clr);
-        list.appendChild(foot);
+        pfootbox.appendChild(foot);
       }
       fitModalContent();
     }
@@ -5949,11 +6078,21 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   function mountKeyPool(host, p, opts) {
     opts = opts || {};
     const oauth = p.auth === 'oauth';
+    const titleText = opts.title || (oauth ? '账号' : 'API Key');
     let editing = ''; // 正在改的凭证 id
     let adding = false;
     let tick = null;
     // 行内「用这把测延迟」的结果：{ [credentialId]: { cls:'run'|'ok'|'bad', text, title } }，标在那一行上
     const latency = {};
+
+    host.innerHTML = '';
+    const titleRow = document.createElement('div'); titleRow.className = 'khead-row';
+    const lbl = document.createElement('label'); lbl.textContent = titleText;
+    titleRow.appendChild(lbl);
+    const actions = document.createElement('div'); actions.className = 'khead-actions';
+    titleRow.appendChild(actions);
+    host.appendChild(titleRow);
+
     const el = document.createElement('div'); el.className = 'kpool';
     host.appendChild(el);
     // 凭证在对话框 / 提示里的叫法：备注 > 账号邮箱（登录类）/ Key 掩码（Key 类）> 序号
@@ -5962,14 +6101,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     function render(pp) {
       p = pp || p;
       const creds = (p.credentials || []).slice().sort((a, b) => a.priority - b.priority);
+      actions.innerHTML = '';
       el.innerHTML = '';
-      // 头：标题 + 策略切换（只有多把时才有意义）
-      const head = document.createElement('div'); head.className = 'kphead';
-      const t = document.createElement('span'); t.className = 't';
-      const cooling = creds.filter((c) => c.cooldownUntil > Date.now()).length;
-      const unit = oauth ? ' 个' : ' 把';
-      t.textContent = (oauth ? '账号池' : 'Key 池') + ' · ' + creds.length + unit + (cooling ? ' · ' + cooling + unit + '冷却中' : '');
-      head.appendChild(t);
+
+      // 顶部并排右侧操作区：[主备 | 均衡] 策略切换（多把时显示）+ [+] 按钮（再加一把 Key / 再登录账号）
       if (creds.length > 1) {
         const seg = document.createElement('div'); seg.className = 'seg';
         seg.innerHTML = '<button data-k="priority" title="主备：固定用最优先的一把，它挂了才切下一把；同一会话粘住同一把（保住 prompt cache 命中率）">主备</button><button data-k="least-used" title="均衡：每个新会话选累计使用最少的一把，把额度摊开；会话内仍粘住同一把">均衡</button>';
@@ -5977,9 +6112,25 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           b.classList.toggle('sel', b.dataset.k === (p.poolStrategy || 'priority'));
           b.addEventListener('click', () => vscode.postMessage({ type: 'saveProvider', id: p.id, poolStrategy: b.dataset.k }));
         });
-        head.appendChild(seg);
+        actions.appendChild(seg);
       }
-      el.appendChild(head);
+
+      const addBtn = document.createElement('button');
+      addBtn.className = 'btn btn-connect btn-sq' + (oauth ? ' kaddacct' : ' kaddbtn');
+      addBtn.title = oauth
+        ? '再登录一个账号，进同一个池（被限流 / 额度用尽时自动切到下一个）'
+        : (creds.length > 1 ? '再加一把 Key；被限流 / 额度用尽 / 鉴权失败时自动切到下一把' : '再加一把 Key 组成池：一把被限流或额度用尽时自动切换');
+      addBtn.innerHTML = ICON_PLUS;
+      if (oauth) {
+        addBtn.addEventListener('click', () => opts.onAddAccount && opts.onAddAccount());
+      } else {
+        addBtn.addEventListener('click', () => {
+          adding = !adding;
+          editing = '';
+          render();
+        });
+      }
+      actions.appendChild(addBtn);
 
       creds.forEach((c, i) => {
         const now = Date.now();
@@ -6085,29 +6236,22 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         }
       });
 
-      // 底部：加一把
-      const add = document.createElement('div'); add.className = 'kpadd';
-      if (oauth) {
-        add.classList.add('kpadd-mini');
-        add.innerHTML = '<button class="btn btn-connect btn-sq kaddacct" title="再登录一个账号，进同一个池（被限流 / 额度用尽时自动切到下一个）">' + ICON_PLUS + '</button>';
-        add.querySelector('.kaddacct').addEventListener('click', () => opts.onAddAccount && opts.onAddAccount());
-      } else if (adding) {
+      // 处于添加态时在列表末尾展开输入行；平常常态下底部无需多余占位行
+      if (!oauth && adding) {
+        const add = document.createElement('div'); add.className = 'kpadd';
         add.innerHTML = '<input class="klabel" type="text" placeholder="备注（可选）" spellcheck="false" maxlength="40">' + keyInput('knew', '再贴一把 API Key') + '<button class="btn btn-primary btn-sm kadd">加入</button><button class="btn btn-ghost btn-sm kcancel">取消</button>';
         bindEyes(add);
         const doAdd = () => { const k = add.querySelector('.knew').value.trim(); if (!k) { toast('error', '请填写 API Key'); return; } vscode.postMessage({ type: 'credentialAdd', id: p.id, apiKey: k, label: add.querySelector('.klabel').value }); adding = false; };
         add.querySelector('.kadd').addEventListener('click', doAdd);
         add.querySelector('.knew').addEventListener('keydown', (e) => { if (e.key === 'Enter') doAdd(); });
         add.querySelector('.kcancel').addEventListener('click', () => { adding = false; render(); });
+        el.appendChild(add);
         setTimeout(() => add.querySelector('.knew').focus(), 0);
-      } else {
-        add.classList.add('kpadd-mini');
-        add.innerHTML = '<button class="btn btn-connect btn-sq kaddbtn" title="' + (creds.length > 1 ? '再加一把 Key；被限流 / 额度用尽 / 鉴权失败时自动切到下一把' : '再加一把 Key 组成池：一把被限流或额度用尽时自动切换') + '">' + ICON_PLUS + '</button>';
-        add.querySelector('.kaddbtn').addEventListener('click', () => { adding = true; editing = ''; render(); });
       }
-      el.appendChild(add);
       const m = el.closest('.modal'); if (m) requestAnimationFrame(() => fitModalContent(m));
       // 冷却倒计时每秒走一下（只在有冷却时）
       if (tick) { clearInterval(tick); tick = null; }
+      const cooling = creds.some((c) => (c.cooldownUntil || 0) > Date.now());
       if (cooling) tick = setInterval(() => { if (!el.isConnected) { clearInterval(tick); tick = null; return; } el.querySelectorAll('.kprow').forEach((r) => { const c = creds.find((x) => x.id === r.dataset.cid); const cd = r.querySelector('.kcd'); if (c && cd && c.cooldownUntil > Date.now()) cd.textContent = ' · 还剩 ' + fmtCooldown(c.cooldownUntil); else if (c && cd) render(); }); }, 1000);
     }
     render();
@@ -6136,9 +6280,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       + '<label>Base URL</label><input class="eUrl" type="text" spellcheck="false" placeholder="https://...">'
       + (noKey
           ? '<label>API Key</label>' + keyInput('eKey', '贴入 API Key') + '<div class="muted eKeyHint" style="margin-top:6px;">尚未配置 Key</div>'
-          : '<label>API Key</label><div class="kpoolHost"></div>')
+          : '<div class="kpoolHost"></div>')
       + '<label>API 格式</label>' + formatSelect('eFmt', fmt0)
-      + '<div class="seg eMode" style="margin-top:6px;"><button data-k="kiro" title="Claude 系与 kiro2cc 一类中转：保留 Kiro 私有字段（effort 档位、思考与计费显示）">中转 · 深度兼容</button><button data-k="official" title="纯 /v1/messages 透传，剥掉 Kiro 私有字段——官方 API 与严格校验的网关用">Anthropic 官方直通</button></div>'
       + '<div class="probe"></div>'
       + '<div class="mfoot eFoot" style="margin-top:6px;"></div>'
       + '<div class="mfootbtns"><button class="btn btn-primary eSave">保存</button>'
@@ -6147,7 +6290,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     modal.appendChild(box);
     bindEyes(box);
     mountCustomSelect(box);
-    const eName = box.querySelector('.eName'), eUrl = box.querySelector('.eUrl'), eKey = box.querySelector('.eKey'), eFmt = box.querySelector('.eFmt'), eMode = box.querySelector('.eMode');
+    const eName = box.querySelector('.eName'), eUrl = box.querySelector('.eUrl'), eKey = box.querySelector('.eKey'), eFmt = box.querySelector('.eFmt');
     eName.value = p.name;
     eUrl.value = p.baseUrl || '';
     // Logo：自动（预设/域名认出的厂商标；目录预设没标时用占位标；自定义是首字母）或从图库手选；标题栏同步预览
@@ -6161,19 +6304,12 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     const kpHost = box.querySelector('.kpoolHost');
     if (kpHost) {
       poolWidget = mountKeyPool(kpHost, p, {
+        title: 'API Key',
         // 结果标在那一行（转圈 → 毫秒数 / ✗），不占下面「测延迟」按钮旁的位置
         onTest: (c) => { if (!probe) return; probeCred = c.id; poolWidget.setLatency(c.id, { cls: 'run' }); probe.runLatency((r) => poolWidget.setLatency(c.id, r)); },
       });
     }
-    let selMode = p.anthropicMode === 'official' ? 'official' : 'kiro';
-    // 格式说明不再单独占一行（下拉项里已带路径，两种 Anthropic 模式的说明在按钮悬停里）
-    const paintFmt = () => {
-      show(eMode, eFmt.value === 'anthropic');
-      eMode.querySelectorAll('button').forEach((b) => b.classList.toggle('sel', b.dataset.k === selMode));
-    };
-    paintFmt();
-    eFmt.addEventListener('change', paintFmt);
-    eMode.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { selMode = b.dataset.k; paintFmt(); }));
+    const selMode = p.anthropicMode || 'kiro';
 
     // 探测草稿：Key 框（首次配置）或池里指定的那把（credentialId；空=首条）
     const getDraft = () => ({ id: p.id, name: eName.value, baseUrl: eUrl.value, apiKey: eKey ? eKey.value : '', format: eFmt.value, anthropicMode: selMode, credentialId: probeCred || undefined });
@@ -6218,7 +6354,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     box.innerHTML =
       '<label>Provider 名称</label><input class="eName" type="text" spellcheck="false">'
       + '<label>Logo</label><div class="ipickHost"></div>'
-      + '<label>账号</label><div class="kpoolHost"></div>'
+      + '<div class="kpoolHost"></div>'
       + (noAcct ? '<div class="mfoot" style="margin-top:4px;">' + esc(vendor.name) + ' 的登录流程不返回邮箱/用户名（官方客户端同样拿不到），池里按序号区分。</div>' : '')
       + (p.loginError ? '<div class="oerr small">' + esc(p.loginError) + '</div>' : '')
       + '<div class="mfootbtns oacctbtns">' + (p.loginState !== 'missing' ? '<button class="btn btn-ghost btn-sm eLogout">退出全部登录</button>' : '') + '</div>'
@@ -6242,6 +6378,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     });
     // 账号池：每行一个已登录账号；「重新登录」针对那一把；「再登录一个账号」进同一个池
     const poolWidget = mountKeyPool(box.querySelector('.kpoolHost'), p, {
+      title: '账号',
       onTest: (c) => { probeCred = c.id; poolWidget.setLatency(c.id, { cls: 'run' }); probe.runLatency((r) => poolWidget.setLatency(c.id, r)); },
       onRelogin: (c) => openOAuthModal(vendor, p, c.id),
       onAddAccount: () => openOAuthModal(vendor, p, 'new'),
@@ -6367,7 +6504,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     if (foldable) { const ch = document.createElement('span'); ch.className = 'gchev'; ch.textContent = '▶'; gh.appendChild(ch); }
     gh.appendChild(iconEl(p.name, p.iconId, logoFallback(p)));
     const gn = document.createElement('span'); gn.className = 'gn'; gn.textContent = p.name; gh.appendChild(gn);
-    const gc = document.createElement('span'); gc.className = 'gc'; gc.textContent = rightText; gh.appendChild(gc);
+    if (rightText) { const gc = document.createElement('span'); gc.className = 'gc'; gc.textContent = rightText; gh.appendChild(gc); }
     return gh;
   }
   // 渠道分组的折叠状态（页面上的已选列表）。默认展开；跨刷新保持。
@@ -6400,6 +6537,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     document.body.classList.toggle('editing', on);
     show($('editBar'), on);
     const b = $('editModels'); b.textContent = on ? '完成' : '编辑'; b.classList.toggle('on', on);
+    const fb = $('footEditModels');
+    if (fb) { fb.textContent = on ? '完成' : '批量编辑'; fb.classList.toggle('on', on); }
     renderModels();
   }
   // 当前列表里所有 (provider, model) 键——全选 / 判断是否已全选用
@@ -6425,6 +6564,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     if (!pickedKeys().length) setEditMode(false); else renderModels();
   }
   $('editModels').addEventListener('click', () => setEditMode(!editMode));
+  const footBtn = $('footEditModels');
+  if (footBtn) footBtn.addEventListener('click', () => setEditMode(!editMode));
+  const footTop = $('footScrollTop');
+  if (footTop) footTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   $('editDone').addEventListener('click', () => setEditMode(false));
   $('editRemove').addEventListener('click', removeChecked);
   $('editAll').addEventListener('click', () => {
@@ -6450,41 +6593,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
   // 来源标签；default 只在三来源都缺时出现（有任何来源就不会落到默认），所以直接写成「未知」
   const CTX_SRC = { override: '你的覆盖', upstream: '渠道 /models 字段', vendor: '内置厂商表', codex: 'Codex 订阅口径目录', catalog: 'models.dev 目录', default: '未知，按默认 200K' };
-  // 每行「上下文」下拉（4.13.55）：数据来自扩展 ctxWindows 消息（与 CPS 广播同一套算法）。候选 = 标准梯子 ≤ 已知最大窗口 ∪ 各来源
-  // 精确值；当前值 = 用户覆盖 ?? 解析值。Kiro 按这里报出的窗口算用量百分比与 80% / 95% 压缩阈值——上游拒收长输入的模型选小一档即可。
-  // ⚠️ 这个窗口必须与 CPS 广播、流式占用百分比同源（都走 modelStore.resolveWindowForGroup），
-  // 否则同一模型会出现两个窗口值 → 百分比到不了阈值 → 永不压缩。见该函数的注释。
-  // 选项分两组：「自动 · 来源」（解析值，选它 = 清除覆盖、回到跟随目录）与「手动覆盖」（其余挡位）——显示文案只有数字，窄面板里
-  // 不再挤掉模型名。乐观更新：先改本地副本立刻重画，扩展回推 ctxWindows 时以真实状态覆盖。
-  function ctxCell(p, mm) {
-    const r = ctxRows[kiroIdOf(mm).toLowerCase()];
-    if (!r || !Array.isArray(r.candidates) || !r.candidates.length) return null;
-    const sel = document.createElement('select');
-    sel.className = 'ctxsel' + (r.source === 'override' ? ' ov' : '');
-    const opt = (v) => { const o = document.createElement('option'); o.value = String(v); o.textContent = fmtCtx(v); if (v === r.effective) o.selected = true; return o; };
-    const autoV = r.candidates.includes(r.resolved) ? r.resolved : null;
-    if (autoV !== null) {
-      const ga = document.createElement('optgroup'); ga.label = '自动 · ' + (CTX_SRC[r.resolvedSource] || r.resolvedSource || '目录');
-      ga.appendChild(opt(autoV));
-      const gm = document.createElement('optgroup'); gm.label = '手动覆盖';
-      for (const v of r.candidates) if (v !== autoV) gm.appendChild(opt(v));
-      sel.appendChild(ga); sel.appendChild(gm);
-    } else {
-      for (const v of r.candidates) sel.appendChild(opt(v));
-    }
-    sel.title = '上下文窗口：' + fmtCtx(r.effective) + ' tokens（' + (CTX_SRC[r.source] || r.source) + '）。Kiro 按它算用量百分比，到 80% 自动摘要、95% 截断；'
-      + '上游拒收长输入时选小一档，选「自动」组里的那项即回到跟随目录。改动会即时同步到 Kiro 右侧选择器（下一轮请求起生效）。';
-    sel.addEventListener('click', (e) => e.stopPropagation());
-    sel.addEventListener('dblclick', (e) => e.stopPropagation());
-    sel.addEventListener('change', () => {
-      const v = Number(sel.value);
-      const auto = v === r.resolved;
-      r.effective = v; r.source = auto ? r.resolvedSource : 'override'; r.override = auto ? null : v;
-      renderModels();
-      vscode.postMessage({ type: 'setCtxWindow', modelId: kiroIdOf(mm), tokens: auto ? null : v });
-    });
-    return sel;
-  }
 
   function modelLine(p, mm, mode) {
     const isCur = mode === 'del' && isDefaultRow(p, mm);
@@ -6508,11 +6616,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       line.appendChild(mid);
     }
     for (const t of capTags(mm)) line.appendChild(t);
-    if (mode === 'del') {
-      // 已在 Kiro 列表里的行才有「上下文」下拉（候选池里的模型没进 CPS 广播，也就没有 Kiro 侧的窗口可调）
-      const ctx = ctxCell(p, mm);
-      if (ctx) line.appendChild(ctx);
-    }
     if (mode === 'del') {
       if (editMode) {
         // 编辑态：点整行勾/取消勾；不响应双击设默认。
@@ -6548,7 +6651,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       const hasCur = picked.some((mm) => isDefaultRow(p, mm));
       const g = document.createElement('div'); g.className = 'mgroup' + (open ? ' open' : '') + (hasCur ? ' cur' : '');
       g.dataset.id = p.id;
-      const gh = groupHead(p, picked.length + ' 个', true);
+      const gh = groupHead(p, '', true);
       gh.title = '按住可上下拖拽整组调整排序；点击折叠/展开';
       gh.addEventListener('pointerdown', (e) => startGroupDrag(e, g));
       if (editMode) {
@@ -6581,9 +6684,17 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     renderBadge();
     fitTabs();
     const sum = $('modelSummary');
-    sum.textContent = enabledTotal ? (enabledTotal + ' 个模型') : '空';
+    sum.textContent = '';
     sum.className = 'muted' + (enabledTotal ? '' : ' warn');
     show($('editModels'), enabledTotal > 0 || editMode);
+    const mfoot = $('modelsFoot');
+    if (mfoot) {
+      show(mfoot, enabledTotal > 5);
+      const ftip = $('modelsFootTip');
+      if (ftip) ftip.textContent = '';
+      const fb = $('footEditModels');
+      if (fb) { fb.textContent = editMode ? '完成' : '批量编辑'; fb.classList.toggle('on', editMode); }
+    }
     if (editMode) {
       // 列表被外部改动（扩展推来的 models）后，清掉已不在列表里的勾选；空了就退出编辑态。
       const valid = new Set(pickedKeys());
@@ -6609,7 +6720,17 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     modal.appendChild(box);
     const q = box.querySelector('.sq'), clr = box.querySelector('.sclear');
     addModal = { list: box.querySelector('.mlist'), q, clr, sum: box.querySelector('.msum2') };
-    q.addEventListener('input', () => { for (const k of Object.keys(poolOpen)) delete poolOpen[k]; renderAddModelModal(); });
+    let isAddModelComposing = false;
+    const applyAddModelSearch = () => {
+      for (const k of Object.keys(poolOpen)) delete poolOpen[k];
+      renderAddModelModal();
+    };
+    q.addEventListener('compositionstart', () => { isAddModelComposing = true; });
+    q.addEventListener('compositionend', () => { isAddModelComposing = false; applyAddModelSearch(); });
+    q.addEventListener('input', (e) => {
+      if (isAddModelComposing || (e && e.isComposing)) return;
+      applyAddModelSearch();
+    });
     clr.addEventListener('click', () => { q.value = ''; renderAddModelModal(); q.focus(); });
     q.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); if (q.value) { q.value = ''; renderAddModelModal(); } else closeModal(); } });
     box.querySelector('.mDone').addEventListener('click', closeModal);
@@ -7680,7 +7801,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       wrap.appendChild(row);
     }
   }
-  promptQEl.addEventListener('input', () => { promptQ = promptQEl.value || ''; renderPrompts(); });
+  let isPromptQComposing = false;
+  const applyPromptSearch = () => { promptQ = promptQEl.value || ''; renderPrompts(); };
+  promptQEl.addEventListener('compositionstart', () => { isPromptQComposing = true; });
+  promptQEl.addEventListener('compositionend', () => { isPromptQComposing = false; applyPromptSearch(); });
+  promptQEl.addEventListener('input', (e) => {
+    if (isPromptQComposing || (e && e.isComposing)) return;
+    applyPromptSearch();
+  });
   promptClrEl.addEventListener('click', () => { promptQEl.value = ''; promptQ = ''; renderPrompts(); promptQEl.focus(); });
   promptQEl.addEventListener('keydown', (e) => { if (e.key === 'Escape' && promptQEl.value) { promptQEl.value = ''; promptQ = ''; renderPrompts(); } });
 
