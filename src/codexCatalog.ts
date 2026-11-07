@@ -17,9 +17,9 @@
  * 故两个文件、四个池一起取最小。方向性理由：上报偏小只让 Kiro 早一点提示压缩，上报偏大则是
  * 长会话中途失败——正是本来源要消除的失效模式。
  *
- * 调用约定：`codexSubscriptionWindow()` 返回非 undefined 时，调用方把它放进 `ContextWindowSources.codex`
- * 并**不再传 `catalog`**。对这条通道而言 models.dev 的值属于另一条产品线，让它一起参与
- * 「已知最大窗口 / 候选挡位」只会把 1050000 变成选择器里一个可点的挡位。
+ * 调用约定：仅明确的 Codex OAuth 渠道使用 `codexSubscriptionWindow()`，不能凭模型名套用到自定义渠道。
+ * 返回非 undefined 时，调用方把它放进 `ContextWindowSources.codex` 并不再传 `catalog`：对订阅渠道而言
+ * models.dev 的值属于另一条产品线。目录仅决定自动值，用户仍可手动覆盖。
  *
  * 设计要点（与 modelCatalog.ts 同款）：
  *  - **纯增强**：两个文件都拉不到时退回家族默认值（`codexFamilyWindow`），绝不降低可用性；

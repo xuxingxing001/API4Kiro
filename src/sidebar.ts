@@ -21,7 +21,7 @@ import {
   upsertAgent,
   watchAgents,
 } from "./agentConfig";
-import { formatContextTokens, normalizeContextOverride } from "./contextWindow";
+import { MAX_CONTEXT_OVERRIDE, MIN_CONTEXT_OVERRIDE, formatContextTokens, normalizeContextOverride } from "./contextWindow";
 import { GITHUB_URL, getUpdateState, installLatestFromGitHub, onUpdateStateChanged } from "./updateChecker";
 import {
   PRESETS,
@@ -738,13 +738,31 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
       case "setCtxWindow": {
         // 模型页每行「上下文」下拉（4.13.55，目标 A4）：modelId 是 Kiro 选择器里的 id（含 @providerId 限定），
-        // tokens 为空 / 0 / 非法 = 回到自动。选中的正是解析值时也按「清除覆盖」处理——用户是想回到跟随目录，不是钉死。
+        // tokens 为空 / 0 = 回到自动。选中解析值也清除覆盖，继续跟随目录。
         const modelId = String(msg.modelId || "").trim();
         if (!modelId) {
           this.toast("error", "参数无效");
           break;
         }
-        const tokens = normalizeContextOverride(msg.tokens) ?? null;
+        let value = msg.tokens;
+        if (msg.custom === true) {
+          value = await vscode.window.showInputBox({
+            title: `${modelId} · 自定义上下文窗口`,
+            prompt: `输入 ${MIN_CONTEXT_OVERRIDE}–${MAX_CONTEXT_OVERRIDE} 之间的整数 tokens（1M = 1000000），以渠道实际支持为准`,
+            value: String(contextWindowRows().find((r) => r.kiroId === modelId)?.info.effective ?? 1000000),
+            validateInput: (input) => Number.isInteger(Number(input)) && normalizeContextOverride(input) !== undefined
+              ? undefined : `请输入 ${MIN_CONTEXT_OVERRIDE}–${MAX_CONTEXT_OVERRIDE} 之间的整数`,
+          });
+          if (value === undefined) {
+            break;
+          }
+        }
+        const tokens = normalizeContextOverride(value) ?? null;
+        if (value !== null && value !== undefined && value !== 0 &&
+            (tokens === null || !Number.isInteger(Number(value)))) {
+          this.toast("error", "上下文窗口必须是 4096–10000000 之间的整数");
+          break;
+        }
         const r = await this.applyContextWindowOverride(modelId, tokens, "panel");
         if (!r.settingsOk) {
           this.toast("error", "已本地记录，但写入 Kiro 设置失败:" + (r.error || "未知错误"));
@@ -4027,7 +4045,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         <span class="fchev">▶</span><h3>上下文</h3><span class="muted" id="ctxSum">--</span>
       </div>
       <div class="fbody">
-        <div class="hint" style="margin-top:0">Kiro 按每个模型报出的窗口算用量百分比：≥ 80% 自动摘要、≥ 95% 截断——所以<b>调低窗口就会让 Kiro 更早压缩</b>。上游返回「上下文超长」时本扩展已转成 Kiro 认得的溢出异常（Kiro 会自动压缩后重试，内建、无需开关）。窗口来源优先级：渠道 /models 字段 → 内置厂商表 → models.dev → 默认 200K；你的覆盖优先于全部。</div>
+        <div class="hint" style="margin-top:0">Kiro 按每个模型报出的窗口算用量百分比：≥ 80% 自动摘要、≥ 95% 截断。窗口可手动调大或调小，也可选择「自定义」输入精确 tokens；目录值仅作自动默认，不限制手动覆盖。请按渠道实际支持设置，调大不会扩展上游能力。自动优先级：渠道 /models 字段 → 内置厂商表 → Codex 订阅目录（仅 Codex 登录渠道）→ models.dev → 默认 200K；你的覆盖优先于全部。上游返回「上下文超长」时，Kiro 会自动压缩后重试。</div>
         <div class="btns" style="margin:8px 0;">
           <button class="btn btn-ghost btn-sm" id="ctxResetAll" disabled>全部重置为自动</button>
         </div>
@@ -6616,6 +6634,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       line.appendChild(mid);
     }
     for (const t of capTags(mm)) line.appendChild(t);
+    if (mode === 'del' && !editMode) {
+      const ctx = ctxRows[String(kiroIdOf(mm)).toLowerCase()];
+      if (ctx) line.appendChild(ctxCardSelect(ctx));
+    }
     if (mode === 'del') {
       if (editMode) {
         // 编辑态：点整行勾/取消勾；不响应双击设默认。
@@ -8462,8 +8484,18 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     const sel = document.createElement('select');
     sel.className = 'ctxsel' + (r.source === 'override' ? ' ov' : '');
     for (const v of r.candidates) { const o = document.createElement('option'); o.value = String(v); o.textContent = fmtCtx(v) + (v === r.resolved ? ' · 自动' : ''); if (v === r.effective) o.selected = true; sel.appendChild(o); }
-    sel.title = '上下文窗口：' + fmtCtx(r.effective) + ' tokens（' + ctxWho(r) + '）。选带「自动」的那项即回到跟随目录；改动即时同步到 Kiro 右侧选择器（下一轮请求起生效）。';
-    sel.addEventListener('change', () => ctxApply(r, Number(sel.value)));
+    const custom = document.createElement('option'); custom.value = 'custom'; custom.textContent = '自定义…'; sel.appendChild(custom);
+    sel.setAttribute('aria-label', r.baseId + ' 上下文窗口');
+    sel.title = '上下文窗口：' + r.effective + ' tokens（' + ctxWho(r) + '）。可调大、调小或自定义，以渠道实际支持为准；选带「自动」的那项回到自动。改动从下一轮请求起生效。';
+    sel.addEventListener('dblclick', (ev) => ev.stopPropagation());
+    sel.addEventListener('change', () => {
+      if (sel.value === 'custom') {
+        sel.value = String(r.effective);
+        vscode.postMessage({ type: 'setCtxWindow', modelId: r.kiroId, custom: true });
+      } else {
+        ctxApply(r, Number(sel.value));
+      }
+    });
     return sel;
   }
   function renderCtxCard() {

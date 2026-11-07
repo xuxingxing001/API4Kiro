@@ -225,16 +225,14 @@ const MODEL_TTL_MS = 60000;
 let mergedCache: RelayModel[] = [];
 
 function parseContextWindow(m: Record<string, unknown>): number {
-  const raw =
-    (m.context_window as number) ??
-    (m.context_length as number) ??
-    (m.max_input_tokens as number) ??
-    (m.max_context_tokens as number) ??
-    (m.maxInputTokens as number) ??
-    (m.inputTokenLimit as number) ??
-    (m.contextWindow as number);
-  const n = Number(raw);
-  return Number.isFinite(n) && n > 0 ? n : 0;
+  for (const raw of [m.context_window, m.context_length, m.max_input_tokens, m.max_context_tokens,
+    m.maxInputTokens, m.inputTokenLimit, m.contextWindow]) {
+    const n = typeof raw === "number" || typeof raw === "string" ? Number(raw) : NaN;
+    if (Number.isFinite(n) && n >= 1) {
+      return Math.floor(n);
+    }
+  }
+  return 0;
 }
 
 function strField(x: Record<string, unknown>, ...keys: string[]): string | undefined {
@@ -737,14 +735,20 @@ export function thinkingVariantOf(providerId: string, base: string): string | un
  * Kiro 到不了 80% 阈值 → 永不压缩、上下文无界增长。两条路径从此只允许有一个实现。
  */
 export function resolveWindowForGroup(g: EffortGroup, kiroId: string): ContextWindowInfo {
-  const cap = lookupCapability(g.baseId);
-  // Codex 系模型命中订阅口径时**不再传 catalog**：models.dev 对这条通道是平台 API 口径的数，
-  // 混进来会把 1050000 变成「已知最大窗口」，进而让选择器多出一个点不得的挡位。
-  const codexWin = codexSubscriptionWindow(g.baseId);
+  const provider = getProvider(g.providerId);
+  const mappedId = provider?.modelMapping?.[kiroId] || provider?.modelMapping?.[g.baseId] ||
+    provider?.defaultModel || g.baseId;
+  const cap = lookupCapability(mappedId);
+  const upstream = upstreamModelFor(provider, mappedId);
+  const vendor = vendorModelFor(provider, mappedId);
+  // 模型名不能证明自定义渠道走的是 Codex 订阅后端；订阅口径只用于明确的 Codex OAuth 渠道。
+  const codexWin = provider && isOAuthProvider(provider) && provider.oauthVendor === "codex"
+    ? codexSubscriptionWindow(mappedId)
+    : undefined;
   return resolveContextWindow(
     {
-      upstream: g.upstreamContextWindow,
-      vendor: g.vendorContextWindow,
+      upstream: upstream?.upstreamContextWindow ?? g.upstreamContextWindow,
+      vendor: vendor?.contextWindow ?? g.vendorContextWindow,
       codex: codexWin,
       catalog: codexWin === undefined ? cap?.contextWindow : undefined,
     },

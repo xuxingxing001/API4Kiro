@@ -26,6 +26,7 @@ import {
   Protocol,
   fetchAllModels,
   fetchProviderModels,
+  contextWindowRows,
   getCachedModels,
   GROUP_HEADER_PREFIX,
   groupHeaderProviderName,
@@ -1406,17 +1407,21 @@ export class KrsProxyServer {
       const protocol: Protocol = protocolOfWire(wire);
       // 提示要紧跟在 messageMetadataEvent 之后、正文之前，这样用户第一眼就知道图片被忽略了。
       let pendingNotice = notice;
+      // 上游模型名会丢失别名与渠道限定；用所选渠道的 Kiro id 才能读到用户设置的窗口。
+      const contextRows = contextWindowRows().filter((r) => r.providerId === meta.provider.id);
+      const contextModelId = (contextRows.find((r) => r.baseId === meta.kiroModel) ??
+        contextRows.find((r) => r.baseId === modelId))?.kiroId ?? modelId;
       const converter: StreamConverter =
         wire === "responses"
-          ? new ResponsesStreamConverter(convId, modelId)
+          ? new ResponsesStreamConverter(convId, contextModelId)
           : wire === "openai"
-          ? new OpenaiStreamConverter(convId, modelId, {
+          ? new OpenaiStreamConverter(convId, contextModelId, {
               echoReasoning: shouldEchoReasoning(modelId),
               thoughtDedupe: getOpenaiThoughtDedupe(),
             })
           : wire === "gemini"
-          ? new GeminiStreamConverter(convId, modelId)
-          : new AnthropicStreamConverter(convId, modelId, { trace: isDebug() });
+          ? new GeminiStreamConverter(convId, contextModelId)
+          : new AnthropicStreamConverter(convId, contextModelId, { trace: isDebug() });
       const decoder = new StringDecoder("utf8");
       let buffer = "";
       let clientClosed = false;
@@ -1598,7 +1603,7 @@ export class KrsProxyServer {
             }
             writeEvent(res, ev);
             if (pendingNotice && ev.messageMetadataEvent) {
-              writeEvent(res, { assistantResponseEvent: { content: pendingNotice, modelId } });
+              writeEvent(res, { assistantResponseEvent: { content: pendingNotice, modelId: contextModelId } });
               pendingNotice = undefined;
               wroteContent = true;
             }

@@ -46,7 +46,7 @@
 | `api2kiroDual.debug` | `boolean` | `false` | 排障用，默认关。开启后会把每次上游请求的完整请求正文（系统提示、整段对话与编辑器上下文、工具 schema）和上游响应流片段写进「API4Kiro」输出通道；已知形态的 API Key / token / Bearer 会自动打码，但正文内容不会。日志由 Kiro 落在其日志目录的输出通道文件里（logs/<会话>/window*/exthost/output_logging_*/*-API4Kiro.log，随会话轮转）。仅排障时开启，用完请关闭。 |
 | `api2kiroDual.showTokenUsage` | `boolean` | `true` | 在每轮回答的页脚（Elapsed time 那一行）标注本轮消耗的 token（Est. Input Tokens Used / Est. Output Tokens Used）。两个协议通道都支持。 |
 | `api2kiroDual.textOnlyModels` | `array` | `[]` | 已知不支持图片输入的模型 ID。发往这些模型的请求会自动剥离图片（包括对话历史里的，否则一张图会让整个对话永久 400），并在回复前提示。此外扩展会自动学习：某模型因图片被上游拒绝时会被记住，无需手填。Kiro 的附件按钮不按模型能力禁用，所以只能在代理层兜底。 |
-| `api2kiroDual.contextWindowOverrides` | `object` | `{}` | 按模型覆盖上下文窗口（tokens）：键是 Kiro 模型选择器里的模型 id（同名模型在多个渠道都勾了时，第二个起为「id@渠道id」），值是窗口大小。代理把它作为 tokenLimits.maxInputTokens 报给 Kiro，Kiro 据此计算上下文百分比、80% 自动摘要与 95% 截断——中转站实际窗口比官方标称小时把它调低，可让 Kiro 提前压缩而不是撞 400。通常不必手填：在侧边栏模型页每个已勾选模型行的「上下文」下拉或 Kiro 聊天框里的「上下文」下拉选择即可写入。删掉一项即回到自动（渠道字段 → 厂商目录 → models.dev → 默认 200000）。 |
+| `api2kiroDual.contextWindowOverrides` | `object` | `{}` | 按模型覆盖上下文窗口（tokens，4096–10000000）：键是 Kiro 模型选择器里的模型 id（同名模型在多个渠道都勾了时，第二个起为「id@渠道id」）。手动值可高于或低于目录默认值；侧边栏「模型」页及「设置 → 上下文」支持选择档位或自定义精确 tokens，Kiro 聊天框的上下文下拉也可选档位。代理用同一窗口计算上下文百分比、80% 自动摘要与 95% 截断。请按渠道实际能力设置，调大不会扩展上游能力。删除覆盖即回到自动：渠道字段 → 厂商目录 → Codex 订阅目录（仅 Codex 登录渠道）→ models.dev → 默认 200000。 |
 
 ## 由扩展自动管理（请勿手动编辑）
 

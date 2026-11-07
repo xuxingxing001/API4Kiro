@@ -114,6 +114,8 @@ Kiro 视图标题栏最右侧有两枚命令图标（4.13.56）：**GitHub 标**
 
 ## 用量与上下文
 
+**调整上下文窗口**：在「模型」页已选模型行，或「设置 → 上下文」中选择窗口大小。手动档位不受目录自动值限制，可选择 1M / 2M；选「自定义…」可填写 4096–10000000 之间的精确 tokens（1M = 1000000）。选带「自动」的项恢复自动解析，修改从下一轮请求起生效。自定义 provider 按渠道声明与 models.dev 解析，只有 Codex 登录渠道使用 Codex 订阅窗口目录。窗口需与渠道实际能力一致，调大设置不会扩展上游服务的能力。
+
 - **每轮页脚**（`showTokenUsage`）：在 Kiro 回答页脚标注本轮消耗的 Est. Input / Output Tokens；工具循环里的多次请求会累计成一轮后再上报，避免 Kiro 重复聚合。
 - **本地账本**：每个请求的 token 由本扩展自己记账，不依赖中转站的用量接口；用量页的趋势、Sankey、汇总都来自这份账本。也可填 `usagePath` 走中转站的额度接口（kiro2cc-proxy 风格或 New-API 风格）。
 - **Context Usage 弹层**：Kiro 底栏的 Context Usage 悬停弹层显示**真实模型窗口**（来自 CPS 报给 Kiro 的 `tokenLimits.maxInputTokens`，例如 1M）与六类分项占用（Your prompts / Kiro responses / Session files / Built-in tools / MCP tools / Steering files），不再是反推出来的假窗口。

@@ -6,7 +6,7 @@
  * （设置 `api2kiroDual.contextWindowOverrides`：Kiro 选择器里的模型 id → tokens）。
  *
  *  - 「已知最大窗口」= 三个来源的最大值；三个来源都没有 → 标「未知」，按默认 200000 算。
- *  - 「候选挡位」= 标准梯子里 ≤ 已知最大窗口的项 ∪ 各来源给出的精确值（去重升序）；未知时候选只到 200000。
+ *  - 「候选挡位」= 标准梯子 ∪ 各来源给出的精确值（去重升序）；目录值只决定自动值，不限制手动覆盖。
  *  - 「当前生效窗口」= 用户覆盖（须是候选之一或任意 > 0 的整数）?? 解析值。解析值沿用 4.13.54 的优先级
  *    （渠道字段 → 厂商目录 → models.dev → 默认），不因本功能改变默认行为。
  *  - CPS 把生效窗口放进 `tokenLimits.maxInputTokens`（Kiro 据此算 80% / 95% 阈值与百分比），把候选表放进
@@ -107,22 +107,14 @@ export function resolveBaseContextWindow(src: ContextWindowSources): { value: nu
   return { value: DEFAULT_CONTEXT_WINDOW, source: "default" };
 }
 
-/** 候选挡位：梯子 ≤ max 的项 ∪ 各来源精确值（∪ 当前生效值，保证下拉里一定有选中项），去重升序。 */
-export function contextCandidates(max: number, exact: number[] = []): number[] {
-  const set = new Set<number>();
-  for (const step of CONTEXT_LADDER) {
-    if (step <= max) {
-      set.add(step);
-    }
-  }
+/** 候选挡位：完整梯子 ∪ 各来源精确值 ∪ 当前生效值，去重升序。 */
+export function contextCandidates(exact: number[] = []): number[] {
+  const set = new Set<number>(CONTEXT_LADDER);
   for (const v of exact) {
     const n = posInt(v);
     if (n) {
       set.add(n);
     }
-  }
-  if (set.size === 0) {
-    set.add(CONTEXT_LADDER[0]);
   }
   return [...set].sort((a, b) => a - b);
 }
@@ -134,7 +126,7 @@ export function resolveContextWindow(src: ContextWindowSources, override?: unkno
   const base = resolveBaseContextWindow(src);
   const ov = normalizeContextOverride(override);
   const effective = ov ?? base.value;
-  const candidates = contextCandidates(max, [...values, effective]);
+  const candidates = contextCandidates([...values, effective]);
   return {
     known,
     max,
@@ -174,6 +166,8 @@ export function contextSourceLabel(source: ContextWindowSource, known: boolean):
       return "渠道 /models 字段";
     case "vendor":
       return "厂商目录";
+    case "codex":
+      return "Codex 订阅口径目录";
     case "catalog":
       return "models.dev";
     default:
@@ -198,7 +192,7 @@ export interface ContextTable {
   resolvedSource: Exclude<ContextWindowSource, "override">;
 }
 
-const SOURCES: readonly ContextWindowSource[] = ["override", "upstream", "vendor", "catalog", "default"];
+const SOURCES: readonly ContextWindowSource[] = ["override", "upstream", "vendor", "codex", "catalog", "default"];
 
 export function parseContextTable(raw: string): ContextTable | undefined {
   const parts = String(raw || "").split("~");
